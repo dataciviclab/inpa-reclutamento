@@ -1,4 +1,5 @@
 import streamlit as st
+import pandas as pd
 from sources import fmt_num
 
 st.title("🔍 Cerca Bandi")
@@ -82,7 +83,7 @@ if detail_id:
     st.page_link("pages/03_cerca.py", label="← Cerca", icon="🔍")
 
     # Header
-    titolo = b['titolo'] if hasattr(b, 'titolo') and str(b['titolo']) != 'nan' else "Senza titolo"
+    titolo = b['titolo'] if pd.notna(b.get('titolo')) else "Senza titolo"
     st.title(str(titolo)[:80])
 
     status = b.get('status', '?')
@@ -93,12 +94,9 @@ if detail_id:
 
     # Info row
     parts = []
-    fig = b.get('figura_ricercata')
-    if fig and str(fig) != 'nan': parts.append(f"👤 {fig}")
-    ente = b.get('ente')
-    if ente and str(ente) != 'nan': parts.append(f"🏛️ {ente}")
-    reg = b.get('regione')
-    if reg and str(reg) != 'nan': parts.append(f"📍 {reg}")
+    for key, prefix in [('figura_ricercata', '👤'), ('ente', '🏛️'), ('regione', '📍')]:
+        v = b.get(key)
+        if pd.notna(v): parts.append(f"{prefix} {v}")
     if parts:
         st.markdown(" | ".join(parts))
 
@@ -106,28 +104,23 @@ if detail_id:
     c1, c2, c3, c4 = st.columns(4)
     with c1:
         posti = b.get('num_posti')
-        st.metric("Posti", int(posti) if posti and str(posti) != 'nan' else "—")
+        st.metric("Posti", int(posti) if pd.notna(posti) else "—")
     with c2:
         scad = b.get('data_scadenza')
-        if scad and str(scad) != 'nan':
-            import pandas as pd
-            scad_dt = pd.to_datetime(scad)
-            st.metric("Scadenza", scad_dt.strftime('%d/%m/%Y'))
-        else:
-            st.metric("Scadenza", "—")
+        st.metric("Scadenza", pd.to_datetime(scad).strftime('%d/%m/%Y') if pd.notna(scad) else "—")
     with c3:
         tipo = b.get('tipo_procedura')
-        st.metric("Tipo", str(tipo) if tipo and str(tipo) != 'nan' else "—")
+        st.metric("Tipo", str(tipo) if pd.notna(tipo) else "—")
     with c4:
         cat = b.get('categoria')
-        st.metric("Categoria", str(cat) if cat and str(cat) != 'nan' else "—")
+        st.metric("Categoria", str(cat) if pd.notna(cat) else "—")
 
     st.divider()
 
     # Description
     import re
     desc = b.get('descrizione')
-    if desc and str(desc) != 'nan':
+    if pd.notna(desc):
         st.subheader("📝 Descrizione")
         desc_clean = re.sub(r'<[^>]+>', '', str(desc)).strip()
         if desc_clean:
@@ -142,10 +135,9 @@ if detail_id:
         details = {}
         for k, label in [('codice', 'Codice'), ('settore', 'Settore'), ('provincia', 'Provincia')]:
             v = b.get(k)
-            if v and str(v) != 'nan': details[label] = v
+            if pd.notna(v): details[label] = v
         pub = b.get('data_pubblicazione')
-        if pub and str(pub) != 'nan':
-            import pandas as pd
+        if pd.notna(pub):
             details['Pubblicato'] = pd.to_datetime(pub).strftime('%d/%m/%Y')
         for k, v in details.items():
             st.markdown(f"**{k}:** {v}")
@@ -154,16 +146,16 @@ if detail_id:
         st.subheader("💰 Retribuzione")
         sal_max = b.get('salary_max')
         sal_min = b.get('salary_min')
-        if sal_max and str(sal_max) != 'nan' and float(sal_max) > 100:
-            sal_min_v = float(sal_min) if sal_min and str(sal_min) != 'nan' else 0
+        if pd.notna(sal_max) and float(sal_max) > 100:
+            sal_min_v = float(sal_min) if pd.notna(sal_min) else 0
             st.metric("Stipendio", f"€{sal_min_v:,.0f} – €{float(sal_max):,.0f}")
         else:
             st.info("Non dichiarata")
 
         st.subheader("🔧 Requisiti")
-        for k, label in [('pec_obbligatoria', 'PEC obbligatoria'), ('richiede_pagamento', 'Pagamento'), ('is_remote', 'Remote')]:
-            v = b.get(k)
-            if v and str(v) != 'nan' and v:
+        for key, label in [('pec_obbligatoria', 'PEC obbligatoria'), ('richiede_pagamento', 'Pagamento'), ('is_remote', 'Remote')]:
+            v = b.get(key)
+            if pd.notna(v) and v:
                 st.markdown(f"✅ {label}")
 
     # Comunicazioni
@@ -173,30 +165,29 @@ if detail_id:
         st.subheader(f"💬 Comunicazioni ({len(com)})")
         for _, c in com.iterrows():
             data = c.get('data_pubblicazione')
-            data_str = pd.to_datetime(data).strftime('%d/%m/%Y') if data and str(data) != 'nan' else "?"
-            cat = c.get('categoria', '?')
-            with st.expander(f"📅 {data_str} — {cat}"):
+            data_str = pd.to_datetime(data).strftime('%d/%m/%Y') if pd.notna(data) else "?"
+            cat_c = c.get('categoria', '?')
+            with st.expander(f"📅 {data_str} — {cat_c}"):
                 subj = c.get('subject', '')
-                if subj and str(subj) != 'nan': st.markdown(f"**{subj}**")
+                if pd.notna(subj): st.markdown(f"**{subj}**")
                 body = c.get('body', '')
-                if body and str(body) != 'nan':
+                if pd.notna(body):
                     body_clean = re.sub(r'<[^>]+>', '', str(body)).strip()
                     if body_clean: st.markdown(body_clean[:500])
 
 else:
-    # === BROWSE ===
-    st.sidebar.header("Filtri")
-    search = st.sidebar.text_input("🔍 Ricerca", placeholder="titolo, ente, figura...")
-
-    regioni = ["Tutte", "Lombardia", "Veneto", "Emilia Romagna", "Toscana", "Campania",
+    # === BROWSE with filters on top ===
+    col1, col2, col3, col4 = st.columns(4)
+    with col1:
+        search = st.text_input("🔍 Ricerca", placeholder="titolo, ente, figura...", label_visibility="visible")
+    with col2:
+        regione = st.selectbox("Regione", ["Tutte", "Lombardia", "Veneto", "Emilia Romagna", "Toscana", "Campania",
                "Piemonte", "Lazio", "Sicilia", "Puglia", "Marche", "Sardegna",
-               "Abruzzo", "Calabria", "Liguria", "Umbria", "Molise", "Basilicata"]
-    regione = st.sidebar.selectbox("Regione", regioni)
-
-    tipi = ["Tutti", "ESAMI", "TITOLI_ESAMI", "TITOLI_COLLOQUIO", "COLLOQUIO", "TITOLI"]
-    tipo = st.sidebar.selectbox("Tipo", tipi)
-
-    giorni = st.sidebar.slider("Scadenza entro gg", 7, 180, 60)
+               "Abruzzo", "Calabria", "Liguria", "Umbria", "Molise", "Basilicata"])
+    with col3:
+        tipo = st.selectbox("Tipo", ["Tutti", "ESAMI", "TITOLI_ESAMI", "TITOLI_COLLOQUIO", "COLLOQUIO", "TITOLI"])
+    with col4:
+        giorni = st.slider("Scadenza entro gg", 7, 180, 60)
 
     results = search_bandi(search, regione, tipo, giorni)
 
@@ -205,13 +196,12 @@ else:
     if len(results) == 0:
         st.info("Nessun bando trovato.")
     else:
-        # Build clickable list
         for _, row in results.head(50).iterrows():
-            titolo = str(row['titolo'])[:70] if row['titolo'] and str(row['titolo']) != 'nan' else "?"
-            ente = str(row['ente'])[:30] if row['ente'] and str(row['ente']) != 'nan' else "?"
-            fig = str(row['figura_ricercata'])[:30] if row['figura_ricercata'] and str(row['figura_ricercata']) != 'nan' else "?"
-            scad = pd.to_datetime(row['data_scadenza']).strftime('%d/%m') if row['data_scadenza'] and str(row['data_scadenza']) != 'nan' else "?"
-            posti = int(row['posti']) if row['posti'] and str(row['posti']) != 'nan' else 0
+            titolo = str(row['titolo'])[:70] if pd.notna(row.get('titolo')) else "?"
+            ente = str(row['ente'])[:30] if pd.notna(row.get('ente')) else "?"
+            fig = str(row['figura_ricercata'])[:30] if pd.notna(row.get('figura_ricercata')) else "?"
+            scad = pd.to_datetime(row['data_scadenza']).strftime('%d/%m') if pd.notna(row.get('data_scadenza')) else "?"
+            posti = int(row['posti']) if pd.notna(row.get('posti')) else 0
 
             st.page_link(
                 "pages/03_cerca.py",
