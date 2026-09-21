@@ -25,9 +25,12 @@ mart:
       sql: "sql/mart_tempi_per_ente.sql"
     - name: "mart_trasparenza_ente"
       sql: "sql/mart_trasparenza_ente.sql"
+    - name: "mart_tempi_per_procedura"
+      sql: "sql/mart_tempi_per_procedura.sql"
   required_tables:
     - "mart_tempi_per_ente"
     - "mart_trasparenza_ente"
+    - "mart_tempi_per_procedura"
   validate:
     table_rules:
       mart_tempi_per_ente:
@@ -38,6 +41,10 @@ mart:
         required_columns: [ente, totale_bandi_chiusi, pct_trasparenza]
         primary_key: [ente]
         min_rows: 5
+      mart_tempi_per_procedura:
+        required_columns: [tipo_procedura, n_bandi_totali, n_con_comunicazioni, mediana_gg]
+        primary_key: [tipo_procedura]
+        min_rows: 3
 
 validation:
   fail_on_error: true

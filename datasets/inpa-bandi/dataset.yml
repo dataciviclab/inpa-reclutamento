@@ -60,12 +60,21 @@ mart:
       sql: "sql/mart_scadenze_calendario.sql"
     - name: "mart_efficienza_ente"
       sql: "sql/mart_efficienza_ente.sql"
+    - name: "mart_profili_ricercati"
+      sql: "sql/mart_profili_ricercati.sql"
+    - name: "mart_geografia_bandi"
+      sql: "sql/mart_geografia_bandi.sql"
+    - name: "mart_stipendi"
+      sql: "sql/mart_stipendi.sql"
   required_tables:
     - "mart_sintesi_regione_categoria"
     - "mart_scadenze_prossime"
     - "mart_trend_anno"
     - "mart_scadenze_calendario"
     - "mart_efficienza_ente"
+    - "mart_profili_ricercati"
+    - "mart_geografia_bandi"
+    - "mart_stipendi"
   validate:
     table_rules:
       mart_sintesi_regione_categoria:
@@ -88,6 +97,17 @@ mart:
         required_columns: [ente, totale_bandi, totale_posti, media_posti_per_bando]
         primary_key: [ente]
         min_rows: 10
+      mart_profili_ricercati:
+        required_columns: [profilo, n_bandi, posti_totali, enti_diversi]
+        primary_key: [profilo]
+        min_rows: 5
+      mart_geografia_bandi:
+        required_columns: [regione, n_bandi, posti_totali, enti_diversi]
+        primary_key: [regione]
+        min_rows: 10
+      mart_stipendi:
+        required_columns: [ente, titolo, salary_min, salary_max]
+        min_rows: 1
 
 validation:
   fail_on_error: true

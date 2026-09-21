@@ -8,50 +8,42 @@ PREFIX = "inpa/"
 SLUG_BANDI = "inpa_bandi"
 SLUG_COMUNICAZIONI = "inpa_comunicazioni"
 SLUG_INSIGHT = "inpa_insight"
-YEARS = [2026]
 
 
 @st.cache_data(ttl=3600, show_spinner=False)
 def load_mart(table: str, slug: str = SLUG_BANDI, year: int = 2026):
-    """Load a mart table from GCS or local out/."""
     return load_mart_table(slug, table, year, prefix=PREFIX)
 
 
 @st.cache_data(ttl=3600, show_spinner=False)
 def query_clean(sql: str, slug: str = SLUG_BANDI):
-    """Query clean layer."""
     return _query_clean(slug, sql, [2026], prefix=PREFIX)
 
 
 @st.cache_data(ttl=3600, show_spinner=False)
 def load_kpi():
-    """Load key metrics for overview."""
     bandi = load_clean(SLUG_BANDI, [2026], prefix=PREFIX)
     com = load_clean(SLUG_COMUNICAZIONI, [2026], prefix=PREFIX)
 
     import duckdb
     con = duckdb.connect()
 
-    # Bandi stats
+    con.register('bandi', bandi)
+    con.register('com', com)
+
     bandi_stats = con.execute("""
         SELECT
             COUNT(*) as totale,
             SUM(CASE WHEN status = 'OPEN' THEN 1 ELSE 0 END) as aperti,
-            SUM(CASE WHEN status = 'OPEN' THEN num_posti ELSE 0 END) as posti_aperti,
-            COUNT(DISTINCT ente) as enti
+            SUM(CASE WHEN status = 'OPEN' AND NOT is_graduatoria THEN num_posti ELSE 0 END) as posti_aperti,
+            COUNT(DISTINCT CASE WHEN status = 'OPEN' THEN ente END) as enti_aperti
         FROM bandi
-        WHERE is_graduatoria = FALSE
     """).fetchone()
 
-    # Comunicazioni stats
-    com_stats = con.execute("""
-        SELECT COUNT(*) as totale
-        FROM com
-    """).fetchone()
+    com_stats = con.execute("SELECT COUNT(*) FROM com").fetchone()
 
-    # Scadenze prossime
     scadenze = con.execute("""
-        SELECT COUNT(*) as scadenze_30gg
+        SELECT COUNT(*)
         FROM bandi
         WHERE status = 'OPEN'
           AND data_scadenza IS NOT NULL
@@ -63,7 +55,7 @@ def load_kpi():
         "bandi_totali": bandi_stats[0],
         "bandi_aperti": bandi_stats[1],
         "posti_aperti": bandi_stats[2] or 0,
-        "enti": bandi_stats[3],
+        "enti_aperti": bandi_stats[3],
         "comunicazioni": com_stats[0],
         "scadenze_30gg": scadenze[0],
     }
