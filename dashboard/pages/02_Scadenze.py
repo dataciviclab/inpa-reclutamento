@@ -21,9 +21,9 @@ df = load_mart("mart_scadenze_calendario")
 
 if df is not None and len(df) > 0:
     # Filter by days
-    from datetime import datetime, timedelta
-    today = datetime.now().date()
-    cutoff = today + timedelta(days=giorni)
+    import pandas as pd
+    today = pd.Timestamp.now().normalize()
+    cutoff = today + pd.Timedelta(days=giorni)
     df = df[(df["data_scadenza"] >= today) & (df["data_scadenza"] <= cutoff)]
     
     if len(df) > 0:

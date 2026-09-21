@@ -26,8 +26,8 @@ def query_clean(sql: str, slug: str = SLUG_BANDI, year: int = 2026):
 @st.cache_data(ttl=3600, show_spinner=False)
 def load_kpi():
     """Load key metrics for overview."""
-    bandi = load_clean(SLUG_BANDI, 2026, prefix=PREFIX)
-    com = load_clean(SLUG_COMUNICAZIONI, 2026, prefix=PREFIX)
+    bandi = load_clean(SLUG_BANDI, [2026], prefix=PREFIX)
+    com = load_clean(SLUG_COMUNICAZIONI, [2026], prefix=PREFIX)
 
     import duckdb
     con = duckdb.connect()
@@ -55,7 +55,8 @@ def load_kpi():
         FROM bandi
         WHERE status = 'OPEN'
           AND data_scadenza IS NOT NULL
-          AND data_scadenza BETWEEN CURRENT_DATE AND CURRENT_DATE + INTERVAL '30 days'
+          AND data_scadenza >= CURRENT_DATE
+          AND data_scadenza <= CURRENT_DATE + INTERVAL '30 days'
     """).fetchone()
 
     return {
