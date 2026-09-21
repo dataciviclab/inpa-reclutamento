@@ -20,7 +20,7 @@ def load_mart(table: str, slug: str = SLUG_BANDI, year: int = 2026):
 @st.cache_data(ttl=3600, show_spinner=False)
 def query_clean(sql: str, slug: str = SLUG_BANDI):
     """Query clean layer."""
-    return _query_clean(sql, slug, [2026], prefix=PREFIX)
+    return _query_clean(slug, sql, [2026], prefix=PREFIX)
 
 
 @st.cache_data(ttl=3600, show_spinner=False)
