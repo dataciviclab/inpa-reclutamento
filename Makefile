@@ -28,7 +28,8 @@ harvest-full:
 	$(PYTHON) datasets/inpa-comunicazioni/scripts/harvest_comunicazioni.py data/raw/comunicazioni_full.csv
 
 harvest-daily:
-	$(PYTHON) scripts/harvest_incremental.py
+	$(PYTHON) datasets/inpa-bandi/scripts/harvest_bandi.py data/raw/bandi_daily.csv --status OPEN --no-detail --date-from $$(date -d '7 days ago' +%Y-%m-%d)
+	$(PYTHON) datasets/inpa-comunicazioni/scripts/harvest_comunicazioni.py data/raw/comunicazioni_daily.csv
 
 registry:
 	$(TOOLKIT) registry build --prefix inpa-reclutamento

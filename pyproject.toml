@@ -26,9 +26,6 @@ dev = [
 pipeline = [
     "dataciviclab-toolkit @ git+https://github.com/dataciviclab/toolkit.git",
 ]
-scripts = [
-    "requests>=2.28",
-]
 dashboard = [
     "streamlit>=1.61",
     "plotly>=5.18",

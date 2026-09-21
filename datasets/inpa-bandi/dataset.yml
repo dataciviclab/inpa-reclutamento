@@ -50,10 +50,6 @@ clean:
 
 mart:
   tables:
-    - name: "mart_sintesi_regione_categoria"
-      sql: "sql/mart_sintesi_regione_categoria.sql"
-    - name: "mart_scadenze_prossime"
-      sql: "sql/mart_scadenze_prossime.sql"
     - name: "mart_trend_anno"
       sql: "sql/mart_trend_anno.sql"
     - name: "mart_scadenze_calendario"
@@ -67,8 +63,6 @@ mart:
     - name: "mart_stipendi"
       sql: "sql/mart_stipendi.sql"
   required_tables:
-    - "mart_sintesi_regione_categoria"
-    - "mart_scadenze_prossime"
     - "mart_trend_anno"
     - "mart_scadenze_calendario"
     - "mart_efficienza_ente"
@@ -77,14 +71,6 @@ mart:
     - "mart_stipendi"
   validate:
     table_rules:
-      mart_sintesi_regione_categoria:
-        required_columns: [regione, categoria, num_bandi, posti_totali]
-        primary_key: [regione, categoria]
-        min_rows: 5
-      mart_scadenze_prossime:
-        required_columns: [data_scadenza, num_bandi, posti_totali]
-        primary_key: [data_scadenza]
-        min_rows: 5
       mart_trend_anno:
         required_columns: [anno, num_bandi, posti_totali, enti_distinti]
         primary_key: [anno]

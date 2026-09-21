@@ -194,7 +194,8 @@ def fetch_page(session: requests.Session, body: dict, page: int, size: int) -> d
 
 
 def harvest(
-    status: str, size: int, pause: float, with_detail: bool, max_items: int | None = None
+    status: str, size: int, pause: float, with_detail: bool,
+    max_items: int | None = None, date_from: str | None = None,
 ) -> list[dict]:
     body = {
         "text": "",
@@ -203,7 +204,7 @@ def harvest(
         "status": [status],
         "settoreId": None,
         "provinciaCodice": None,
-        "dateFrom": None,
+        "dateFrom": date_from,
         "dateTo": None,
         "livelliAnzianitaIds": None,
         "tipoImpiegoId": None,
@@ -269,11 +270,16 @@ def main() -> int:
     parser.add_argument(
         "--max-items", type=int, default=None, help="limita il numero di bandi raccolti (test)"
     )
+    parser.add_argument(
+        "--date-from", type=str, default=None,
+        help="data inizio (YYYY-MM-DD) — solo bandi pubblicati dopo questa data"
+    )
     args = parser.parse_args()
 
     out_path = Path(args.output)
     rows = harvest(
-        args.status, args.size, args.pause, with_detail=not args.no_detail, max_items=args.max_items
+        args.status, args.size, args.pause, with_detail=not args.no_detail,
+        max_items=args.max_items, date_from=args.date_from,
     )
 
     if not rows:

@@ -1,12 +1,9 @@
 -- Mart tempi per procedura: tempo medio bando -> prima comunicazione per tipo
 -- {support.bandi.clean} = clean layer di inpa-bandi
 -- {support.com.clean} = clean layer di inpa-comunicazioni
-WITH com AS (
-    SELECT * FROM read_parquet('{support.com.clean}')
-),
-prima AS (
+WITH prima AS (
     SELECT concorso_id, MIN(data_pubblicazione) AS prima_com
-    FROM com
+    FROM read_parquet('{support.com.clean}')
     GROUP BY concorso_id
 )
 SELECT
