@@ -1,8 +1,10 @@
-"""Basic tests for inPA Reclutamento."""
+"""Structure tests for inPA Reclutamento."""
 
 import pathlib
+import pytest
 
 
+@pytest.mark.contract
 def test_datasets_exist():
     """Verify dataset configs exist."""
     base = pathlib.Path(__file__).parent.parent
@@ -11,6 +13,7 @@ def test_datasets_exist():
     assert (base / "compose" / "inpa-insight" / "dataset.yml").exists()
 
 
+@pytest.mark.contract
 def test_scripts_exist():
     """Verify harvest scripts exist."""
     base = pathlib.Path(__file__).parent.parent
@@ -19,6 +22,7 @@ def test_scripts_exist():
     assert (base / "datasets" / "inpa-comunicazioni" / "scripts" / "harvest_comunicazioni.py").exists()
 
 
+@pytest.mark.smoke
 def test_dashboard_exists():
     """Verify dashboard files exist."""
     base = pathlib.Path(__file__).parent.parent
