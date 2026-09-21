@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Python setup
+        uses: dataciviclab/.github/actions/python-setup@main
+      
+      - name: Install dependencies
+        run: pip install -e ".[dev,pipeline]"
+      
+      - name: Lint
+        run: ruff check scripts/ dashboard/ tests/
+      
+      - name: Format check
+        run: ruff format --check scripts/ dashboard/ tests/
+      
+      - name: Tests
+        run: pytest tests/ -v
+
+  dashboard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Python setup
+        uses: dataciviclab/.github/actions/python-setup@main
+      
+      - name: Install dashboard dependencies
+        run: pip install -r dashboard/requirements.txt
+      
+      - name: Dashboard smoke test
+        run: python -m py_compile dashboard/app.py

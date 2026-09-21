@@ -1,0 +1,110 @@
+name: Pipeline
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'datasets/**'
+      - 'compose/**'
+      - 'scripts/**'
+  schedule:
+    - cron: '0 6 * * *'    # daily incremental
+    - cron: '0 6 1 * *'    # monthly full (1° del mese)
+  workflow_dispatch:
+    inputs:
+      full:
+        description: 'Run full harvest (not incremental)'
+        type: boolean
+        default: false
+      datasets:
+        description: 'Comma-separated dataset slugs (empty = all)'
+        type: string
+        default: ''
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  detect:
+    runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.detect.outputs.changed }}
+      is_schedule: ${{ steps.detect.outputs.is_schedule }}
+      is_full: ${{ steps.detect.outputs.is_full }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: detect
+        run: |
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            echo "is_schedule=true" >> $GITHUB_OUTPUT
+            # Full harvest on 1st of month
+            DAY=$(date -d "${{ github.event.head_commit.timestamp }}" +%d 2>/dev/null || echo "01")
+            if [ "$DAY" = "01" ]; then
+              echo "is_full=true" >> $GITHUB_OUTPUT
+            else
+              echo "is_full=false" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo "is_schedule=false" >> $GITHUB_OUTPUT
+            echo "is_full=${{ inputs.full || 'false' }}" >> $GITHUB_OUTPUT
+          fi
+          
+          # Detect changed datasets
+          if [ "${{ github.event_name }}" = "push" ]; then
+            CHANGED=$(git diff --name-only HEAD~1 HEAD | grep -E "^datasets/|^compose/" | cut -d'/' -f2 | sort -u | tr '\n' ',' | sed 's/,$//')
+            echo "changed=$CHANGED" >> $GITHUB_OUTPUT
+          else
+            echo "changed=${{ inputs.datasets }}" >> $GITHUB_OUTPUT
+          fi
+
+  pipeline:
+    needs: detect
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Python setup
+        uses: dataciviclab/.github/actions/python-setup@main
+      
+      - name: Install dependencies
+        run: pip install -e ".[pipeline]"
+      
+      - name: Harvest (if scheduled or full)
+        if: needs.detect.outputs.is_schedule == 'true' || needs.detect.outputs.is_full == 'true'
+        run: |
+          if [ "${{ needs.detect.outputs.is_full }}" = "true" ]; then
+            make harvest-full
+          else
+            make harvest-daily
+          fi
+        env:
+          TOOLKIT_ALLOW_SCRIPT_SOURCE: 1
+      
+      - name: Run pipeline
+        run: |
+          if [ -n "${{ needs.detect.outputs.changed }}" ]; then
+            for slug in $(echo "${{ needs.detect.outputs.changed }}" | tr ',' ' '); do
+              make run-${slug} 2>/dev/null || make run
+            done
+          else
+            make run
+          fi
+        env:
+          TOOLKIT_ALLOW_SCRIPT_SOURCE: 1
+      
+      - name: GCS auth
+        uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WIF_PROVIDER }}
+          service_account: ${{ secrets.GCP_SA_EMAIL }}
+      
+      - name: Sync to GCS
+        run: |
+          gsutil -m rsync -r -x '_run/|_validate/|metadata.json' out/data/clean/ gs://dataciviclab-clean/inpa/
+          gsutil -m rsync -r -x '_run/|_validate/|metadata.json' out/data/mart/ gs://dataciviclab-mart/inpa/
+      
+      - name: Registry update PR
+        uses: dataciviclab/.github/actions/registry-update-pr@main
+        with:
+          repo-slug: inpa-reclutamento

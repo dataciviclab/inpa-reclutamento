@@ -1,0 +1,8 @@
+# Dashboard inPA Reclutamento — dipendenze per Streamlit Community Cloud
+# Replica l'extra 'dashboard' dal pyproject.toml del repo
+streamlit>=1.61
+plotly>=5.18
+altair>=6.2
+pandas>=3.0
+duckdb>=1.5.3
+lab-connectors[duckdb] @ git+https://github.com/dataciviclab/lab-connectors.git

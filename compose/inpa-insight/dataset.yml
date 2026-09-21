@@ -1,0 +1,43 @@
+# Compose inPA: analisi cross-dataset bandi × comunicazioni
+# Unisce inpa-bandi e inpa-comunicazioni per metriche di trasparenza e tempi.
+
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "inpa_insight"
+  source_id: "inpa_reclutamento"
+  tags: [pa, concorsi, reclutamento, trasparenza, compose]
+  category: pa
+  years: [2026]
+
+support:
+  - name: bandi
+    config: "../../datasets/inpa-bandi/dataset.yml"
+    years: [2026]
+  - name: com
+    config: "../../datasets/inpa-comunicazioni/dataset.yml"
+    years: [2026]
+
+mart:
+  tables:
+    - name: "mart_tempi_per_ente"
+      sql: "sql/mart_tempi_per_ente.sql"
+    - name: "mart_trasparenza_ente"
+      sql: "sql/mart_trasparenza_ente.sql"
+  required_tables:
+    - "mart_tempi_per_ente"
+    - "mart_trasparenza_ente"
+  validate:
+    table_rules:
+      mart_tempi_per_ente:
+        required_columns: [ente, n_bandi_con_comunicazioni, mediana_giorni]
+        primary_key: [ente]
+        min_rows: 5
+      mart_trasparenza_ente:
+        required_columns: [ente, totale_bandi_chiusi, pct_trasparenza]
+        primary_key: [ente]
+        min_rows: 5
+
+validation:
+  fail_on_error: true
