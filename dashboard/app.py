@@ -21,6 +21,7 @@ pages = {
         st.Page("pages/02_Profili.py", title="Profili", icon="👤"),
         st.Page("pages/03_Geografia.py", title="Geografia", icon="🗺️"),
         st.Page("pages/04_Scadenze.py", title="Scadenze", icon="📅"),
+        st.Page("pages/09_Bandi.py", title="Bandi", icon="📋"),
     ],
     "Analisi": [
         st.Page("pages/05_Tempi.py", title="Tempi", icon="⏱️"),

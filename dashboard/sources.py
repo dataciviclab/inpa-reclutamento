@@ -4,7 +4,7 @@ import streamlit as st
 from lab_connectors.duckdb.queries import load_mart_table, query_clean as _query_clean, load_clean
 from lab_connectors.formatters import fmt_num, fmt_pct
 
-PREFIX = "inpa-reclutamento/"
+PREFIX = "inpa/"
 SLUG_BANDI = "inpa_bandi"
 SLUG_COMUNICAZIONI = "inpa_comunicazioni"
 SLUG_INSIGHT = "inpa_insight"
@@ -21,12 +21,23 @@ def query_clean(sql: str, slug: str = SLUG_BANDI):
 
 
 @st.cache_data(ttl=3600, show_spinner=False)
+def load_clean_bandi():
+    """Load all bandi from clean layer."""
+    return load_clean(SLUG_BANDI, [2026], prefix=PREFIX)
+
+
+@st.cache_data(ttl=3600, show_spinner=False)
+def load_clean_comunicazioni():
+    """Load all comunicazioni from clean layer."""
+    return load_clean(SLUG_COMUNICAZIONI, [2026], prefix=PREFIX)
+
+
+@st.cache_data(ttl=3600, show_spinner=False)
 def load_kpi():
-    bandi = load_clean(SLUG_BANDI, [2026], prefix=PREFIX)
-    com = load_clean(SLUG_COMUNICAZIONI, [2026], prefix=PREFIX)
+    bandi = load_clean_bandi()
+    com = load_clean_comunicazioni()
 
     import duckdb
-
     con = duckdb.connect()
 
     con.register("bandi", bandi)
