@@ -7,7 +7,7 @@
     {
       "slug": "inpa_bandi",
       "name": "Inpa Bandi",
-      "description": "",
+      "description": "Bandi e avvisi del Portale inPA — concorsi, mobilità e selezioni della PA",
       "source": "",
       "source_id": "inpa_reclutamento",
       "period": {
@@ -222,13 +222,16 @@
         "inpa_bandi__mart_scadenze_prossime",
         "inpa_bandi__mart_trend_anno",
         "inpa_bandi__mart_scadenze_calendario",
-        "inpa_bandi__mart_efficienza_ente"
+        "inpa_bandi__mart_efficienza_ente",
+        "inpa_bandi__mart_profili_ricercati",
+        "inpa_bandi__mart_geografia_bandi",
+        "inpa_bandi__mart_stipendi"
       ]
     },
     {
       "slug": "inpa_comunicazioni",
       "name": "Inpa Comunicazioni",
-      "description": "",
+      "description": "Comunicazioni di procedura dei concorsi inPA — graduatorie, calendari, esiti",
       "source": "",
       "source_id": "inpa_reclutamento",
       "period": {
@@ -316,6 +319,26 @@
       }
     },
     {
+      "slug": "inpa_bandi__mart_geografia_bandi",
+      "dataset": "inpa_bandi",
+      "table": "mart_geografia_bandi",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/inpa-reclutamento/inpa_bandi/2026/mart_geografia_bandi.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "inpa_bandi__mart_profili_ricercati",
+      "dataset": "inpa_bandi",
+      "table": "mart_profili_ricercati",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/inpa-reclutamento/inpa_bandi/2026/mart_profili_ricercati.parquet",
+        "multi_file": false
+      }
+    },
+    {
       "slug": "inpa_bandi__mart_scadenze_calendario",
       "dataset": "inpa_bandi",
       "table": "mart_scadenze_calendario",
@@ -342,6 +365,16 @@
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/inpa-reclutamento/inpa_bandi/2026/mart_sintesi_regione_categoria.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "inpa_bandi__mart_stipendi",
+      "dataset": "inpa_bandi",
+      "table": "mart_stipendi",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/inpa-reclutamento/inpa_bandi/2026/mart_stipendi.parquet",
         "multi_file": false
       }
     },
@@ -386,6 +419,16 @@
       }
     },
     {
+      "slug": "inpa_insight__mart_tempi_per_procedura",
+      "dataset": "inpa_insight",
+      "table": "mart_tempi_per_procedura",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/inpa-reclutamento/inpa_insight/2026/mart_tempi_per_procedura.parquet",
+        "multi_file": false
+      }
+    },
+    {
       "slug": "inpa_insight__mart_trasparenza_ente",
       "dataset": "inpa_insight",
       "table": "mart_trasparenza_ente",
@@ -405,21 +448,21 @@
       "detail": "anno 2026 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20260921T130611Z_d9203ef2",
+        "run_id": "20260921T135652Z_1084dbc4",
         "year": 2026,
         "status": "SUCCESS",
         "quality_score": {
           "mart": 100
         },
         "output_rows": {
-          "mart": 3527
+          "mart": 3534
         },
         "output_bytes": {
-          "mart": 44226
+          "mart": 45444
         },
-        "started_at": "2026-09-21T13:06:11.828342+00:00",
-        "finished_at": "2026-09-21T13:06:12.128253+00:00",
-        "duration_seconds": 0.3
+        "started_at": "2026-09-21T13:56:52.156967+00:00",
+        "finished_at": "2026-09-21T13:56:52.553651+00:00",
+        "duration_seconds": 0.397
       }
     },
     {
@@ -430,21 +473,21 @@
       "detail": "anno 2026 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20260921T130526Z_c724d84f",
+        "run_id": "20260921T135639Z_bc6346e1",
         "year": 2026,
         "status": "SUCCESS",
         "quality_score": {
           "mart": 100
         },
         "output_rows": {
-          "mart": 5126
+          "mart": 5198
         },
         "output_bytes": {
-          "mart": 82380
+          "mart": 91623
         },
-        "started_at": "2026-09-21T13:05:26.593251+00:00",
-        "finished_at": "2026-09-21T13:05:26.948570+00:00",
-        "duration_seconds": 0.355
+        "started_at": "2026-09-21T13:56:39.553246+00:00",
+        "finished_at": "2026-09-21T13:56:40.218307+00:00",
+        "duration_seconds": 0.665
       }
     },
     {

@@ -4,7 +4,7 @@ import streamlit as st
 from lab_connectors.duckdb.queries import load_mart_table, query_clean as _query_clean, load_clean
 from lab_connectors.formatters import fmt_num, fmt_pct
 
-PREFIX = "inpa/"
+PREFIX = "inpa-reclutamento/"
 SLUG_BANDI = "inpa_bandi"
 SLUG_COMUNICAZIONI = "inpa_comunicazioni"
 SLUG_INSIGHT = "inpa_insight"
@@ -26,10 +26,11 @@ def load_kpi():
     com = load_clean(SLUG_COMUNICAZIONI, [2026], prefix=PREFIX)
 
     import duckdb
+
     con = duckdb.connect()
 
-    con.register('bandi', bandi)
-    con.register('com', com)
+    con.register("bandi", bandi)
+    con.register("com", com)
 
     bandi_stats = con.execute("""
         SELECT
