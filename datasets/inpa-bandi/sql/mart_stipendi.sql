@@ -16,4 +16,5 @@ FROM clean_input
 WHERE status = 'OPEN'
   AND NOT is_graduatoria
   AND salary_max > 100
+  AND salary_max < 100000
 ORDER BY salary_max DESC

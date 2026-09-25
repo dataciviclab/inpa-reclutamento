@@ -1,7 +1,8 @@
 """Smoke test for dashboard pages."""
 
-import py_compile
 import pathlib
+import py_compile
+
 import pytest
 
 

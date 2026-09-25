@@ -1,6 +1,7 @@
 """Structure tests for inPA Reclutamento."""
 
 import pathlib
+
 import pytest
 
 
@@ -17,9 +18,8 @@ def test_datasets_exist():
 def test_scripts_exist():
     """Verify harvest scripts exist."""
     base = pathlib.Path(__file__).parent.parent
-    assert (base / "scripts" / "harvest_incremental.py").exists()
-    assert (base / "datasets" / "inpa-bandi" / "scripts" / "harvest_bandi.py").exists()
-    assert (base / "datasets" / "inpa-comunicazioni" / "scripts" / "harvest_comunicazioni.py").exists()
+    assert (base / "scripts" / "harvest_bandi.py").exists()
+    assert (base / "scripts" / "harvest_comunicazioni.py").exists()
 
 
 @pytest.mark.smoke

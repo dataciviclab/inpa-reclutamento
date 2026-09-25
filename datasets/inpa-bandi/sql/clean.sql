@@ -1,7 +1,7 @@
--- Clean: tipizzazione + normalizzazione del CSV flat prodotto da harvest_inpa.py
--- Input: raw_input (CSV da scripts/harvest_inpa.py, unione OPEN+CLOSED con union_by_name)
+-- Clean: tipizzazione + normalizzazione del CSV flat prodotto da harvest_bandi.py
+-- Input: raw_input (CSV da scripts/harvest_bandi.py)
 -- Output: parquet normalizzato, una riga = un bando inPA
--- Dedup: 31 id compaiono sia in OPEN che in CLOSED (overlap API) → priorità a OPEN (ha il dettaglio)
+-- Dedup: 31 id compaiono sia in OPEN che in CLOSED (overlap API) → priorità a OPEN
 
 WITH typed AS (
     SELECT
@@ -40,15 +40,9 @@ WITH typed AS (
         normalize_string(categorie)                                             AS categorie,
         normalize_string(settori)                                               AS settori,
         normalize_string(sedi)                                                  AS sedi,
-        normalize_string(company_district_code)                                 AS company_district_code,
-        normalize_string(link_sito_pa)                                          AS link_sito_pa,
-        decode_flag(richiede_pagamento, 'True')                                 AS richiede_pagamento,
-        decode_flag(pec_obbligatoria, 'True')                                   AS pec_obbligatoria,
-        decode_flag(is_remote, 'SI')                                            AS is_remote,
         cast_double(salary_min)                                                 AS salary_min,
         cast_double(salary_max)                                                 AS salary_max,
-        normalize_string(link_gazzetta_ufficiale)                               AS link_gazzetta_ufficiale,
-        cast_int(n_allegati)                                                    AS n_allegati,
+        normalize_string(link_inpa)                                             AS link_inpa,
         ROW_NUMBER() OVER (PARTITION BY normalize_string(id)
                            ORDER BY CASE WHEN normalize_string(status) = 'OPEN' THEN 0 ELSE 1 END) AS rn
     FROM raw_input
@@ -59,7 +53,6 @@ SELECT
     is_graduatoria,
     status, status_label, categoria, settore, regione, provincia, ente,
     enti_riferimento, categorie, settori, sedi,
-    company_district_code, link_sito_pa, richiede_pagamento, pec_obbligatoria,
-    is_remote, salary_min, salary_max, link_gazzetta_ufficiale, n_allegati
+    salary_min, salary_max, link_inpa
 FROM typed
 WHERE rn = 1

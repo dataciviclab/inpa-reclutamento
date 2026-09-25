@@ -21,7 +21,7 @@ raw:
       client:
         timeout: 600
       args:
-        command: "python datasets/inpa-comunicazioni/scripts/harvest_comunicazioni.py raw_input.csv"
+        command: "python ../../scripts/harvest_comunicazioni.py raw_input.csv"
         output: "raw_input.csv"
         filename: "raw_input.csv"
       primary: true

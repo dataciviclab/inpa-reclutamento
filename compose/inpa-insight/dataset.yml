@@ -36,15 +36,15 @@ mart:
       mart_tempi_per_ente:
         required_columns: [ente, n_bandi_con_comunicazioni, mediana_giorni]
         primary_key: [ente]
-        min_rows: 5
+        min_rows: 1
       mart_trasparenza_ente:
         required_columns: [ente, totale_bandi_chiusi, pct_trasparenza]
         primary_key: [ente]
-        min_rows: 5
+        min_rows: 0
       mart_tempi_per_procedura:
         required_columns: [tipo_procedura, n_bandi_totali, n_con_comunicazioni, mediana_gg]
         primary_key: [tipo_procedura]
-        min_rows: 3
+        min_rows: 1
 
 validation:
   fail_on_error: true

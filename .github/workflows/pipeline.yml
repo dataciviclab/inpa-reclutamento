@@ -8,18 +8,8 @@ on:
       - 'compose/**'
       - 'scripts/**'
   schedule:
-    - cron: '0 6 * * *'    # daily incremental
-    - cron: '0 6 1 * *'    # monthly full (1° del mese)
+    - cron: '0 6 * * *'
   workflow_dispatch:
-    inputs:
-      full:
-        description: 'Run full harvest (not incremental)'
-        type: boolean
-        default: false
-      datasets:
-        description: 'Comma-separated dataset slugs (empty = all)'
-        type: string
-        default: ''
 
 permissions:
   contents: write
@@ -31,29 +21,21 @@ jobs:
     outputs:
       changed: ${{ steps.detect.outputs.changed }}
       is_schedule: ${{ steps.detect.outputs.is_schedule }}
-      is_full: ${{ steps.detect.outputs.is_full }}
     steps:
       - uses: actions/checkout@v7
       - id: detect
         run: |
-          if [ "${{ github.event_name }}" = "schedule" ]; then
+          if [ "${{ github.event_name }}" = "schedule" ] || [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             echo "is_schedule=true" >> $GITHUB_OUTPUT
-            DAY=$(date -d "${{ github.event.head_commit.timestamp }}" +%d 2>/dev/null || echo "01")
-            if [ "$DAY" = "01" ]; then
-              echo "is_full=true" >> $GITHUB_OUTPUT
-            else
-              echo "is_full=false" >> $GITHUB_OUTPUT
-            fi
           else
             echo "is_schedule=false" >> $GITHUB_OUTPUT
-            echo "is_full=${{ inputs.full || 'false' }}" >> $GITHUB_OUTPUT
           fi
           
           if [ "${{ github.event_name }}" = "push" ]; then
             CHANGED=$(git diff --name-only HEAD~1 HEAD | grep -E "^datasets/|^compose/" | cut -d'/' -f2 | sort -u | tr '\n' ',' | sed 's/,$//')
             echo "changed=$CHANGED" >> $GITHUB_OUTPUT
           else
-            echo "changed=${{ inputs.datasets }}" >> $GITHUB_OUTPUT
+            echo "changed=" >> $GITHUB_OUTPUT
           fi
 
   pipeline:
@@ -68,16 +50,9 @@ jobs:
       - name: Install dependencies
         run: pip install -e ".[pipeline]"
       
-      - name: Harvest (if scheduled or full)
-        if: needs.detect.outputs.is_schedule == 'true' || needs.detect.outputs.is_full == 'true'
-        run: |
-          if [ "${{ needs.detect.outputs.is_full }}" = "true" ]; then
-            make harvest-full
-          else
-            make harvest-daily
-          fi
-        env:
-          TOOLKIT_ALLOW_SCRIPT_SOURCE: 1
+      - name: Source health check
+        if: needs.detect.outputs.is_schedule == 'true'
+        run: make health-check
       
       - name: Run pipeline
         run: |

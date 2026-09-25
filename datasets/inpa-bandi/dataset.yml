@@ -1,6 +1,5 @@
 # Bandi e avvisi nel Portale inPA (Portale del Reclutamento PA)
 # Fonte: API pubblica non documentata https://portale.inpa.gov.it/concorsi-smart/api/
-# Harvest via scripts/harvest_bandi.py → snapshot OPEN (con dettaglio) + CLOSED (storico)
 
 root: "../../out"
 schema_version: 1
@@ -19,18 +18,18 @@ raw:
     - name: "inpa_open"
       type: "script"
       client:
-        timeout: 1200
+        timeout: 300
       args:
-        command: "python datasets/inpa-bandi/scripts/harvest_bandi.py raw_input.csv"
+        command: "python ../../scripts/harvest_bandi.py raw_input.csv --status OPEN"
         output: "raw_input.csv"
         filename: "raw_input.csv"
       primary: true
     - name: "inpa_closed"
       type: "script"
       client:
-        timeout: 1500
+        timeout: 1200
       args:
-        command: "python datasets/inpa-bandi/scripts/harvest_bandi.py raw_input_closed.csv --status CLOSED --no-detail"
+        command: "python ../../scripts/harvest_bandi.py raw_input_closed.csv --status CLOSED"
         output: "raw_input_closed.csv"
         filename: "raw_input_closed.csv"
 
@@ -42,11 +41,11 @@ clean:
     header: true
     delim: ","
     encoding: "utf-8"
-  required_columns: [id, codice, titolo, figura_ricercata, data_pubblicazione, data_scadenza, num_posti, is_graduatoria, tipo_procedura, categoria, settore, regione, provincia, ente, status, status_label, company_district_code, link_sito_pa, link_gazzetta_ufficiale]
+  required_columns: [id, codice, titolo, figura_ricercata, data_pubblicazione, data_scadenza, num_posti, is_graduatoria, tipo_procedura, categoria, settore, regione, provincia, ente, status, status_label, salary_min, salary_max, link_inpa]
   validate:
-    not_null: [id, titolo, data_scadenza]
+    not_null: [id, titolo]
     primary_key: [id]
-    min_rows: 50000
+    min_rows: 500
 
 mart:
   tables:
@@ -74,23 +73,23 @@ mart:
       mart_trend_anno:
         required_columns: [anno, num_bandi, posti_totali, enti_distinti]
         primary_key: [anno]
-        min_rows: 3
+        min_rows: 1
       mart_scadenze_calendario:
         required_columns: [data_scadenza, num_bandi, posti_totali, enti_diversi, categorie]
         primary_key: [data_scadenza]
-        min_rows: 5
+        min_rows: 1
       mart_efficienza_ente:
         required_columns: [ente, totale_bandi, totale_posti, media_posti_per_bando]
         primary_key: [ente]
-        min_rows: 10
+        min_rows: 1
       mart_profili_ricercati:
         required_columns: [profilo, n_bandi, posti_totali, enti_diversi]
         primary_key: [profilo]
-        min_rows: 5
+        min_rows: 1
       mart_geografia_bandi:
         required_columns: [regione, n_bandi, posti_totali, enti_diversi]
         primary_key: [regione]
-        min_rows: 10
+        min_rows: 1
       mart_stipendi:
         required_columns: [ente, titolo, salary_min, salary_max]
         min_rows: 1

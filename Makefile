@@ -2,7 +2,7 @@ PYTHON = python3
 TOOLKIT = toolkit
 EXPORTS = export TOOLKIT_ALLOW_SCRIPT_SOURCE=1
 
-.PHONY: check run run-all run-bandi run-comunicazioni run-compose clean dashboard harvest-full harvest-daily
+.PHONY: check run run-all run-bandi run-comunicazioni run-compose clean dashboard health-check schema-check
 
 check:
 	$(TOOLKIT) run preflight -c datasets/inpa-bandi/dataset.yml
@@ -10,32 +10,24 @@ check:
 	python -m pytest tests/ -v
 	ruff check scripts/ dashboard/
 
+health-check:
+	$(PYTHON) scripts/source_health_check.py --verbose
+
+schema-check:
+	$(PYTHON) scripts/schema_drift_check.py data/raw/bandi_open.csv --schema bandi --verbose
+
 run: run-bandi run-comunicazioni run-compose
 
 run-all: run
 
 run-bandi:
-	$(EXPORTS) && $(TOOLKIT) run --all -c datasets/inpa-bandi/dataset.yml
+	$(EXPORTS) && $(TOOLKIT) run -c datasets/inpa-bandi/dataset.yml
 
 run-comunicazioni:
-	$(EXPORTS) && $(TOOLKIT) run --all -c datasets/inpa-comunicazioni/dataset.yml
+	$(EXPORTS) && $(TOOLKIT) run -c datasets/inpa-comunicazioni/dataset.yml
 
 run-compose:
-	$(EXPORTS) && $(TOOLKIT) run --all -c compose/inpa-insight/dataset.yml
-
-harvest-full:
-	$(PYTHON) datasets/inpa-bandi/scripts/harvest_bandi.py data/raw/bandi_full.csv
-	$(PYTHON) datasets/inpa-comunicazioni/scripts/harvest_comunicazioni.py data/raw/comunicazioni_full.csv
-
-harvest-daily:
-	$(PYTHON) datasets/inpa-bandi/scripts/harvest_bandi.py data/raw/bandi_daily.csv --status OPEN --no-detail --date-from $$(date -d '7 days ago' +%Y-%m-%d)
-	$(PYTHON) datasets/inpa-comunicazioni/scripts/harvest_comunicazioni.py data/raw/comunicazioni_daily.csv
-
-registry:
-	$(TOOLKIT) registry build --prefix inpa-reclutamento
-
-registry-write:
-	$(TOOLKIT) registry build --prefix inpa-reclutamento --write
+	$(EXPORTS) && $(TOOLKIT) run -c compose/inpa-insight/dataset.yml
 
 dashboard:
 	cd dashboard && streamlit run app.py
