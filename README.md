@@ -13,7 +13,7 @@ Dati aperti sul reclutamento della Pubblica Amministrazione italiana dal Portale
 | `inpa_bandi_open` | Bandi aperti (attivi) — ~1.8k bandi | Giornaliero |
 | `inpa_bandi_closed` | Bandi chiusi (archivio storico) — ~74k bandi | Mensile (1° del mese) |
 | `inpa_comunicazioni` | Comunicazioni di procedura (graduatorie, calendari, esiti) | Giornaliero |
-| `inpa_insight` | Analisi cross-dataset: tempi per ente, trasparenza, procedure | Giornaliero |
+| `inpa_insight` | Analisi cross-dataset: trasparenza enti, tempi, procedure | Mensile |
 
 Copertura: **tutti gli enti PA italiani**, dal 2026. Dati harvestati dall'API pubblica inPA.
 
@@ -23,7 +23,7 @@ Copertura: **tutti gli enti PA italiani**, dal 2026. Dati harvestati dall'API pu
 - Quali sono i profili professionali più ricercati dalla PA?
 - Quanto tempo passa tra la pubblicazione di un bando e la comunicazione dell'esito?
 - Quali regioni hanno più bandi aperti e quali meno?
-- Qual è lo stipendio medio offerto nei concorsi PA?
+- Quali enti pubblicano gli esiti dei concorsi e quali no?
 
 ## Come accedere
 
@@ -36,7 +36,7 @@ gs://dataciviclab-clean/inpa-reclutamento/inpa_comunicazioni/2026/
 **DuckDB** — query dirette sui dati:
 ```sql
 SELECT ente, COUNT(*) AS n_bandi, SUM(num_posti) AS posti
-FROM read_parquet('gs://dataciviclab-mart/inpa-reclutamento/inpa_bandi_open/*/mart_efficienza_ente.parquet')
+FROM read_parquet('gs://dataciviclab-mart/inpa-reclutamento/inpa_bandi_open/*/mart_enti.parquet')
 GROUP BY ente ORDER BY posti DESC LIMIT 10;
 ```
 
@@ -48,10 +48,10 @@ GROUP BY ente ORDER BY posti DESC LIMIT 10;
 ```
 datasets/
   inpa-bandi-open/       bandi aperti (harvest → clean → mart)
-  inpa-bandi-closed/     bandi chiusi (harvest → clean, no mart)
+  inpa-bandi-closed/     bandi chiusi (harvest → clean → mart)
   inpa-comunicazioni/    comunicazioni di procedura
 compose/
-  inpa-insight/          analisi cross-dataset bandi × comunicazioni
+  inpa-insight/          analisi cross-dataset: trasparenza, tempi, procedure
 dashboard/               app Streamlit
 registry/                catalogo pubblicato
 tests/                   test suite
@@ -60,6 +60,8 @@ tests/                   test suite
 ## Dashboard
 
 La dashboard è disponibile su [Streamlit Community Cloud](https://dataciviclab-inpa-reclutamento.streamlit.app/).
+
+4 pagine: Panoramica, Dove e Chi, Cerca Bandi, Trasparenza.
 
 ## Setup locale
 
@@ -83,7 +85,7 @@ make dashboard
 ## Aggiornamenti
 
 - **Giornaliero** (06:00 UTC): harvest bandi aperti + comunicazioni
-- **Mensile** (1° del mese): harvest bandi chiusi (archivio storico)
+- **Mensile** (1° del mese): harvest bandi chiusi + compose trasparenza
 
 ## Partecipa
 
