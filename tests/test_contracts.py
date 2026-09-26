@@ -28,8 +28,8 @@ def test_mart_sql_reads_from_clean_input():
 
 
 @pytest.mark.policy
-def test_compose_dataset_yml_references_open():
-    """Verify compose references inpa-bandi-open (not old inpa-bandi)."""
+def test_compose_dataset_yml_references_closed():
+    """Verify compose references inpa-bandi-closed (trasparenza needs closed data)."""
     import yaml
 
     cfg = (BASE / "compose" / "inpa-insight" / "dataset.yml").read_text()
@@ -39,7 +39,7 @@ def test_compose_dataset_yml_references_open():
     assert "bandi" in support_names
 
     bandi_support = next(s for s in data["support"] if s["name"] == "bandi")
-    assert "inpa-bandi-open" in bandi_support["config"]
+    assert "inpa-bandi-closed" in bandi_support["config"]
 
 
 @pytest.mark.smoke

@@ -1,5 +1,5 @@
 # Compose inPA: analisi cross-dataset bandi × comunicazioni
-# Unisce inpa-bandi e inpa-comunicazioni per metriche di trasparenza e tempi.
+# Unisce inpa-bandi-closed e inpa-comunicazioni per metriche di trasparenza e tempi.
 
 root: "../../out"
 schema_version: 1
@@ -11,13 +11,29 @@ dataset:
   category: pa
   years: [2026]
 
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "bandi_closed"
+      type: local_file
+      args:
+        path: "../../out/data/clean/inpa_bandi_closed/2026/inpa_bandi_closed_2026_clean.parquet"
+        filename: "bandi_closed.parquet"
+      primary: true
+
 support:
   - name: bandi
-    config: "../../datasets/inpa-bandi-open/dataset.yml"
+    config: "../../datasets/inpa-bandi-closed/dataset.yml"
     years: [2026]
   - name: com
     config: "../../datasets/inpa-comunicazioni/dataset.yml"
     years: [2026]
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: config_only
+    mode: latest
 
 mart:
   tables:
