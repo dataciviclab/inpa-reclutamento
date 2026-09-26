@@ -41,8 +41,20 @@ Home = "https://github.com/dataciviclab/inpa-reclutamento"
 [tool.toolkit.extends]
 source_id = "inpa_reclutamento"
 
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "SIM"]
+ignore = ["E501"]
+
 [tool.pytest.ini_options]
 markers = [
     "contract: contratti pubblici (dataset.yml, parquet schema)",
     "regression: regressioni già verificate",
+    "smoke: smoke test rapidi",
+    "adapter: test integrazione con fonti esterne",
+    "pure_unit: test unitari puri",
+    "policy: test di policy e vincoli organizzativi",
 ]

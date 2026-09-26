@@ -2,10 +2,11 @@ PYTHON = python3
 TOOLKIT = toolkit
 EXPORTS = export TOOLKIT_ALLOW_SCRIPT_SOURCE=1
 
-.PHONY: check run run-all run-bandi run-comunicazioni run-compose clean dashboard health-check schema-check
+.PHONY: check run run-all run-bandi run-bandi-open run-bandi-closed run-comunicazioni run-compose clean dashboard health-check schema-check
 
 check:
-	$(TOOLKIT) run preflight -c datasets/inpa-bandi/dataset.yml
+	$(TOOLKIT) run preflight -c datasets/inpa-bandi-open/dataset.yml
+	$(TOOLKIT) run preflight -c datasets/inpa-bandi-closed/dataset.yml
 	$(TOOLKIT) run preflight -c datasets/inpa-comunicazioni/dataset.yml
 	python -m pytest tests/ -v
 	ruff check scripts/ dashboard/
@@ -20,8 +21,13 @@ run: run-bandi run-comunicazioni run-compose
 
 run-all: run
 
-run-bandi:
-	$(EXPORTS) && $(TOOLKIT) run -c datasets/inpa-bandi/dataset.yml
+run-bandi: run-bandi-open run-bandi-closed
+
+run-bandi-open:
+	$(EXPORTS) && $(TOOLKIT) run -c datasets/inpa-bandi-open/dataset.yml
+
+run-bandi-closed:
+	$(EXPORTS) && $(TOOLKIT) run -c datasets/inpa-bandi-closed/dataset.yml
 
 run-comunicazioni:
 	$(EXPORTS) && $(TOOLKIT) run -c datasets/inpa-comunicazioni/dataset.yml

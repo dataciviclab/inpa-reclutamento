@@ -15,11 +15,10 @@ apply_branding(
 
 pages = {
     "": [
-        st.Page("pages/01_panoramica.py", title="Panoramica", icon="📊", default=True),
-        st.Page("pages/02_dove_chi.py", title="Dove e Chi", icon="🗺️"),
-        st.Page("pages/03_cerca.py", title="Cerca Bandi", icon="🔍"),
-        st.Page("pages/04_analisi.py", title="Analisi", icon="📈"),
-        st.Page("pages/05_sql.py", title="SQL", icon="💻"),
+        st.Page("pages/01_Panoramica.py", title="Panoramica", icon="📊", default=True),
+        st.Page("pages/02_DoveChi.py", title="Dove e Chi", icon="🗺️"),
+        st.Page("pages/03_Cerca.py", title="Cerca Bandi", icon="🔍"),
+        st.Page("pages/05_SQL.py", title="SQL", icon="💻"),
     ],
 }
 

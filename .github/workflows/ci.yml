@@ -11,32 +11,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      
-      - name: Python setup
-        uses: dataciviclab/.github/actions/python-setup@main
-      
-      - name: Install dependencies
-        run: pip install -e ".[dev,pipeline]"
-      
-      - name: Lint
-        run: ruff check scripts/ dashboard/ tests/
-      
-      - name: Format check
-        run: ruff format --check scripts/ dashboard/ tests/
-      
-      - name: Tests
-        run: pytest tests/ -v
+
+      - uses: dataciviclab/.github/actions/python-setup@main
+        with:
+          extras: "dev,pipeline"
+
+      - uses: dataciviclab/.github/.github/actions/python-ci@main
 
   dashboard:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      
-      - name: Python setup
-        uses: dataciviclab/.github/actions/python-setup@main
-      
-      - name: Install dashboard dependencies
-        run: pip install -r dashboard/requirements.txt
-      
+
+      - uses: dataciviclab/.github/actions/python-setup@main
+        with:
+          extras: "dashboard"
+
       - name: Dashboard smoke test
         run: python -m py_compile dashboard/app.py

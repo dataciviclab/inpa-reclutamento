@@ -13,7 +13,7 @@ dataset:
 
 support:
   - name: bandi
-    config: "../../datasets/inpa-bandi/dataset.yml"
+    config: "../../datasets/inpa-bandi-open/dataset.yml"
     years: [2026]
   - name: com
     config: "../../datasets/inpa-comunicazioni/dataset.yml"

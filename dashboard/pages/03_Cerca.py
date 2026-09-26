@@ -2,94 +2,25 @@ import re
 
 import pandas as pd
 import streamlit as st
-from sources import fmt_num
+from sources import fmt_num, load_bando, load_comunicazioni_bando, load_regioni, search_bandi
 
 st.title("🔍 Cerca Bandi")
 
-
-# DuckDB query-based search (no full load)
-@st.cache_data(ttl=3600, show_spinner=False)
-def search_bandi(search="", regione=None, tipo=None, max_giorni=180):
-    import duckdb
-    from lab_connectors.duckdb.queries import _resolve_url
-
-    url = _resolve_url("clean", "clean_parquet", prefix="inpa/", slug="inpa_bandi", year=2026)
-    con = duckdb.connect()
-
-    where = ["status = 'OPEN'", "NOT is_graduatoria"]
-
-    if search:
-        search_esc = search.replace("'", "''")
-        where.append(
-            f"(titolo ILIKE '%{search_esc}%' OR ente ILIKE '%{search_esc}%' OR figura_ricercata ILIKE '%{search_esc}%')"
-        )
-    if regione and regione != "Tutte":
-        where_esc = regione.replace("'", "''")
-        where.append(f"regione = '{where_esc}'")
-    if tipo and tipo != "Tutti":
-        tipo_esc = tipo.replace("'", "''")
-        where.append(f"tipo_procedura = '{tipo_esc}'")
-
-    where.append("data_scadenza IS NOT NULL")
-    where.append(f"data_scadenza <= CURRENT_DATE + INTERVAL '{max_giorni} days'")
-
-    where_sql = " AND ".join(where)
-
-    sql = f"""
-        SELECT id, titolo, figura_ricercata, ente, regione,
-               data_scadenza, CAST(num_posti AS INT) as posti, tipo_procedura
-        FROM read_parquet('{url}')
-        WHERE {where_sql}
-        ORDER BY data_scadenza
-        LIMIT 200
-    """
-    return con.sql(sql).df()
-
-
-@st.cache_data(ttl=3600, show_spinner=False)
-def get_bando_detail(bando_id):
-    import duckdb
-    from lab_connectors.duckdb.queries import _resolve_url
-
-    url = _resolve_url("clean", "clean_parquet", prefix="inpa/", slug="inpa_bandi", year=2026)
-    con = duckdb.connect()
-    id_esc = bando_id.replace("'", "''")
-    sql = f"SELECT * FROM read_parquet('{url}') WHERE id = '{id_esc}'"
-    return con.sql(sql).df()
-
-
-@st.cache_data(ttl=3600, show_spinner=False)
-def get_comunicazioni(bando_id):
-    import duckdb
-    from lab_connectors.duckdb.queries import _resolve_url
-
-    url = _resolve_url(
-        "clean", "clean_parquet", prefix="inpa/", slug="inpa_comunicazioni", year=2026
-    )
-    con = duckdb.connect()
-    id_esc = bando_id.replace("'", "''")
-    sql = f"SELECT * FROM read_parquet('{url}') WHERE concorso_id = '{id_esc}' ORDER BY data_pubblicazione DESC"
-    return con.sql(sql).df()
-
-
-# Check if showing detail
 params = st.query_params
 detail_id = params.get("id", None)
 
 if detail_id:
-    # === SCHEDA BANDO ===
-    bando = get_bando_detail(detail_id)
+    bando = load_bando(detail_id)
 
     if len(bando) == 0:
         st.error("Bando non trovato.")
-        st.page_link("pages/03_cerca.py", label="← Cerca", icon="🔍")
+        st.page_link("pages/03_Cerca.py", label="← Cerca", icon="🔍")
         st.stop()
 
     b = bando.iloc[0]
 
-    st.page_link("pages/03_cerca.py", label="← Cerca", icon="🔍")
+    st.page_link("pages/03_Cerca.py", label="← Cerca", icon="🔍")
 
-    # Header
     titolo = b["titolo"] if pd.notna(b.get("titolo")) else "Senza titolo"
     st.title(str(titolo)[:120])
 
@@ -99,12 +30,10 @@ if detail_id:
     else:
         st.error("🔴 CHIUSO")
 
-    # Link to bando on inPA
     link_inpa = b.get("link_inpa")
     if pd.notna(link_inpa) and str(link_inpa).startswith("http"):
         st.link_button("🔗 Vai al bando su inPA", str(link_inpa), type="primary")
 
-    # Info row
     parts = []
     for key, prefix in [
         ("figura_ricercata", "👤"),
@@ -118,17 +47,13 @@ if detail_id:
     if parts:
         st.markdown(" | ".join(parts))
 
-    # Metrics
     c1, c2, c3, c4 = st.columns(4)
     with c1:
         posti = b.get("num_posti")
         st.metric("Posti", int(posti) if pd.notna(posti) else "—")
     with c2:
         scad = b.get("data_scadenza")
-        st.metric(
-            "Scadenza",
-            pd.to_datetime(scad).strftime("%d/%m/%Y") if pd.notna(scad) else "—",
-        )
+        st.metric("Scadenza", pd.to_datetime(scad).strftime("%d/%m/%Y") if pd.notna(scad) else "—")
     with c3:
         tipo = b.get("tipo_procedura")
         st.metric("Tipo", str(tipo) if pd.notna(tipo) else "—")
@@ -138,7 +63,6 @@ if detail_id:
 
     st.divider()
 
-    # Description
     desc = b.get("descrizione")
     if pd.notna(desc):
         st.subheader("📝 Descrizione")
@@ -148,7 +72,6 @@ if detail_id:
 
     st.divider()
 
-    # Details grid
     c1, c2 = st.columns(2)
     with c1:
         st.subheader("📋 Dettagli")
@@ -166,9 +89,6 @@ if detail_id:
         pub = b.get("data_pubblicazione")
         if pd.notna(pub):
             details["Pubblicato"] = pd.to_datetime(pub).strftime("%d/%m/%Y")
-        n_all = b.get("n_allegati")
-        if pd.notna(n_all) and int(n_all) > 0:
-            details["Allegati"] = int(n_all)
         for k, v in details.items():
             st.markdown(f"**{k}:** {v}")
 
@@ -178,7 +98,9 @@ if detail_id:
         sal_min = b.get("salary_min")
         if pd.notna(sal_max) and float(sal_max) > 100:
             sal_min_v = float(sal_min) if pd.notna(sal_min) else 0
-            st.metric("Stipendio annuo", f"€{sal_min_v:,.0f} – €{float(sal_max):,.0f}")
+            min_fmt = f"{sal_min_v:,.0f}".replace(",", ".")
+            max_fmt = f"{float(sal_max):,.0f}".replace(",", ".")
+            st.metric("Stipendio annuo", f"€{min_fmt} – €{max_fmt}")
         else:
             st.info("Retribuzione non dichiarata nel bando")
 
@@ -188,8 +110,7 @@ if detail_id:
         else:
             st.info("Nessun link disponibile")
 
-    # Comunicazioni
-    com = get_comunicazioni(detail_id)
+    com = load_comunicazioni_bando(detail_id)
     if len(com) > 0:
         st.divider()
         st.subheader(f"💬 Comunicazioni ({len(com)})")
@@ -208,17 +129,10 @@ if detail_id:
                         st.markdown(body_clean[:500])
 
 else:
-    # === BROWSE with filters on top ===
     col1, col2, col3, col4 = st.columns(4)
     with col1:
-        search = st.text_input(
-            "🔍 Ricerca",
-            placeholder="titolo, ente, figura...",
-            label_visibility="visible",
-        )
+        search = st.text_input("🔍 Ricerca", placeholder="titolo, ente, figura...")
     with col2:
-        from sources import load_regioni
-
         regioni = ["Tutte"] + load_regioni()
         regione = st.selectbox("Regione", regioni)
     with col3:
@@ -250,7 +164,7 @@ else:
             posti = int(row["posti"]) if pd.notna(row.get("posti")) else 0
 
             st.page_link(
-                "pages/03_cerca.py",
+                "pages/03_Cerca.py",
                 label=f"**{titolo}**",
                 query_params={"id": row["id"]},
             )

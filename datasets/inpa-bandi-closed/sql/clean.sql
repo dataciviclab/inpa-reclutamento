@@ -1,7 +1,6 @@
 -- Clean: tipizzazione + normalizzazione del CSV flat prodotto da harvest_bandi.py
--- Input: raw_input (CSV da scripts/harvest_bandi.py)
--- Output: parquet normalizzato, una riga = un bando inPA
--- Dedup: 31 id compaiono sia in OPEN che in CLOSED (overlap API) → priorità a OPEN
+-- Input: raw_input (CSV da scripts/harvest_bandi.py --status CLOSED)
+-- Output: parquet normalizzato, una riga = un bando inPA (archivio storico)
 
 WITH typed AS (
     SELECT
@@ -17,15 +16,10 @@ WITH typed AS (
         CASE WHEN EXTRACT(YEAR FROM TRY_CAST(data_visibilita AS DATE)) >= 2000
              THEN TRY_CAST(data_visibilita AS DATE) END                         AS data_visibilita,
         normalize_string(tipo_procedura)                                        AS tipo_procedura,
-        -- Sentinelle num_posti: due categorie di valori non reali
-        -- 1) Valori "tutti 9" (9999/99999/999999): usati come N/D per gli "Elenchi di Idonei"
-        -- 2) Valori > 50.000: graduatorie provinciali MIUR (aggiornamento liste, non bandi reali)
-        -- Le sentinelle vengono NULLate e flaggate con is_graduatoria per trasparenza.
         CASE WHEN cast_int(num_posti) IS NOT NULL
                   AND NOT (regexp_matches(cast_int(num_posti)::VARCHAR, '^9+$') AND cast_int(num_posti) > 99)
                   AND NOT cast_int(num_posti) > 50000
              THEN cast_int(num_posti) END                                    AS num_posti,
-        -- Flag graduatoria: True per bandi con num_posti > 50.000 (graduatorie provinciali MIUR)
         CASE WHEN cast_int(num_posti) IS NOT NULL
                   AND cast_int(num_posti) > 50000
              THEN TRUE ELSE FALSE END                                        AS is_graduatoria,
@@ -42,9 +36,7 @@ WITH typed AS (
         normalize_string(sedi)                                                  AS sedi,
         cast_double(salary_min)                                                 AS salary_min,
         cast_double(salary_max)                                                 AS salary_max,
-        normalize_string(link_inpa)                                             AS link_inpa,
-        ROW_NUMBER() OVER (PARTITION BY normalize_string(id)
-                           ORDER BY CASE WHEN normalize_string(status) = 'OPEN' THEN 0 ELSE 1 END) AS rn
+        normalize_string(link_inpa)                                             AS link_inpa
     FROM raw_input
 )
 SELECT
@@ -55,4 +47,3 @@ SELECT
     enti_riferimento, categorie, settori, sedi,
     salary_min, salary_max, link_inpa
 FROM typed
-WHERE rn = 1

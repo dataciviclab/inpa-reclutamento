@@ -1,6 +1,5 @@
--- Mart efficienza ente: rapporto bandi/posti per ente
--- Chi assume di più con meno burocrazia? Enti con alto volume ma pochi posti
--- potrebbero avere processi inefficienti.
+-- Mart enti: classifica enti per bandi e posti
+-- Risponde a: quali enti assumono di più?
 SELECT
     ente,
     COUNT(*) AS totale_bandi,

@@ -9,6 +9,7 @@ on:
       - 'scripts/**'
   schedule:
     - cron: '0 6 * * *'
+    - cron: '0 6 1 * *'
   workflow_dispatch:
 
 permissions:
@@ -21,6 +22,7 @@ jobs:
     outputs:
       changed: ${{ steps.detect.outputs.changed }}
       is_schedule: ${{ steps.detect.outputs.is_schedule }}
+      is_monthly: ${{ steps.detect.outputs.is_monthly }}
     steps:
       - uses: actions/checkout@v7
       - id: detect
@@ -30,7 +32,13 @@ jobs:
           else
             echo "is_schedule=false" >> $GITHUB_OUTPUT
           fi
-          
+
+          if [ "${{ github.event.schedule }}" = "0 6 1 * *" ]; then
+            echo "is_monthly=true" >> $GITHUB_OUTPUT
+          else
+            echo "is_monthly=false" >> $GITHUB_OUTPUT
+          fi
+
           if [ "${{ github.event_name }}" = "push" ]; then
             CHANGED=$(git diff --name-only HEAD~1 HEAD | grep -E "^datasets/|^compose/" | cut -d'/' -f2 | sort -u | tr '\n' ',' | sed 's/,$//')
             echo "changed=$CHANGED" >> $GITHUB_OUTPUT
@@ -43,37 +51,46 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      
+
       - name: Python setup
         uses: dataciviclab/.github/actions/python-setup@main
-      
+
       - name: Install dependencies
         run: pip install -e ".[pipeline]"
-      
+
       - name: Source health check
         if: needs.detect.outputs.is_schedule == 'true'
         run: make health-check
-      
-      - name: Run pipeline
-        run: |
-          if [ -n "${{ needs.detect.outputs.changed }}" ]; then
-            for slug in $(echo "${{ needs.detect.outputs.changed }}" | tr ',' ' '); do
-              make run-${slug} 2>/dev/null || make run
-            done
-          else
-            make run
-          fi
+
+      - name: Run bandi open (daily)
+        run: make run-bandi-open
         env:
           TOOLKIT_ALLOW_SCRIPT_SOURCE: 1
-      
+
+      - name: Run bandi closed (monthly only)
+        if: needs.detect.outputs.is_monthly == 'true'
+        run: make run-bandi-closed
+        env:
+          TOOLKIT_ALLOW_SCRIPT_SOURCE: 1
+
+      - name: Run comunicazioni
+        run: make run-comunicazioni
+        env:
+          TOOLKIT_ALLOW_SCRIPT_SOURCE: 1
+
+      - name: Run compose
+        run: make run-compose
+        env:
+          TOOLKIT_ALLOW_SCRIPT_SOURCE: 1
+
       - name: GCS auth
         uses: dataciviclab/.github/actions/gcs-auth@main
-      
+
       - name: Sync to GCS
         run: |
           gsutil -m rsync -r -x '_run/|_validate/|metadata.json' out/data/clean/ gs://dataciviclab-clean/inpa-reclutamento/
           gsutil -m rsync -r -x '_run/|_validate/|metadata.json' out/data/mart/ gs://dataciviclab-mart/inpa-reclutamento/
-      
+
       - name: Registry update PR
         uses: dataciviclab/.github/actions/registry-update-pr@main
         with:

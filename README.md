@@ -10,9 +10,10 @@ Dati aperti sul reclutamento della Pubblica Amministrazione italiana dal Portale
 
 | Dataset | Contenuto | Aggiornamento |
 |---------|-----------|---------------|
-| `inpa_bandi` | Bandi e avvisi (OPEN + storico CLOSED) — ~50k bandi, ~15k posti | Giornaliero (incrementale) |
-| `inpa_comunicazioni` | Comunicazioni di procedura (graduatorie, calendari, esiti) | Giornaliero (incrementale) |
-| `inpa_insight` | Analisi cross-dataset: tempi per ento, trasparenza, procedure | Mensile |
+| `inpa_bandi_open` | Bandi aperti (attivi) — ~1.8k bandi | Giornaliero |
+| `inpa_bandi_closed` | Bandi chiusi (archivio storico) — ~74k bandi | Mensile (1° del mese) |
+| `inpa_comunicazioni` | Comunicazioni di procedura (graduatorie, calendari, esiti) | Giornaliero |
+| `inpa_insight` | Analisi cross-dataset: tempi per ente, trasparenza, procedure | Giornaliero |
 
 Copertura: **tutti gli enti PA italiani**, dal 2026. Dati harvestati dall'API pubblica inPA.
 
@@ -28,14 +29,14 @@ Copertura: **tutti gli enti PA italiani**, dal 2026. Dati harvestati dall'API pu
 
 **Parquet (raw)** — scarica i file puliti da GCS:
 ```
-gs://dataciviclab-clean/inpa-reclutamento/inpa_bandi/2026/
+gs://dataciviclab-clean/inpa-reclutamento/inpa_bandi_open/2026/
 gs://dataciviclab-clean/inpa-reclutamento/inpa_comunicazioni/2026/
 ```
 
 **DuckDB** — query dirette sui dati:
 ```sql
 SELECT ente, COUNT(*) AS n_bandi, SUM(num_posti) AS posti
-FROM read_parquet('gs://dataciviclab-mart/inpa-reclutamento/inpa_bandi/*/mart_efficienza_ente.parquet')
+FROM read_parquet('gs://dataciviclab-mart/inpa-reclutamento/inpa_bandi_open/*/mart_efficienza_ente.parquet')
 GROUP BY ente ORDER BY posti DESC LIMIT 10;
 ```
 
@@ -46,13 +47,14 @@ GROUP BY ente ORDER BY posti DESC LIMIT 10;
 
 ```
 datasets/
-  inpa-bandi/          bandi e avvisi (harvest → clean → mart)
-  inpa-comunicazioni/  comunicazioni di procedura
+  inpa-bandi-open/       bandi aperti (harvest → clean → mart)
+  inpa-bandi-closed/     bandi chiusi (harvest → clean, no mart)
+  inpa-comunicazioni/    comunicazioni di procedura
 compose/
-  inpa-insight/        analisi cross-dataset bandi × comunicazioni
-dashboard/             app Streamlit
-registry/              catalogo pubblicato
-tests/                 test suite
+  inpa-insight/          analisi cross-dataset bandi × comunicazioni
+dashboard/               app Streamlit
+registry/                catalogo pubblicato
+tests/                   test suite
 ```
 
 ## Dashboard
@@ -65,10 +67,13 @@ La dashboard è disponibile su [Streamlit Community Cloud](https://dataciviclab-
 # Installa dipendenze
 pip install -e ".[pipeline,dashboard]"
 
-# Harvest completo
-make harvest-full
+# Harvest completo (open + closed)
+make run-bandi
 
-# Esegui pipeline
+# Solo open (daily)
+make run-bandi-open
+
+# Esegui pipeline completa
 make run
 
 # Avvia dashboard
@@ -77,8 +82,8 @@ make dashboard
 
 ## Aggiornamenti
 
-- **Giornaliero** (06:00 UTC): harvest incrementale degli OPEN e comunicazioni recenti
-- **Mensile** (1° del mese): harvest completo di tutti i dati
+- **Giornaliero** (06:00 UTC): harvest bandi aperti + comunicazioni
+- **Mensile** (1° del mese): harvest bandi chiusi (archivio storico)
 
 ## Partecipa
 

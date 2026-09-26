@@ -5,8 +5,8 @@
   "updated_at": "2026-09-21",
   "datasets": [
     {
-      "slug": "inpa_bandi",
-      "name": "Inpa Bandi",
+      "slug": "inpa_bandi_open",
+      "name": "Inpa Bandi Open",
       "description": "Bandi e avvisi del Portale inPA — concorsi, mobilità e selezioni della PA",
       "source": "",
       "source_id": "inpa_reclutamento",
@@ -177,17 +177,93 @@
       ],
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-clean/inpa-reclutamento/inpa_bandi/2026/inpa_bandi_2026_clean.parquet",
+        "path": "gs://dataciviclab-clean/inpa-reclutamento/inpa_bandi_open/2026/inpa_bandi_open_2026_clean.parquet",
         "multi_file": false
       },
       "stage": "incubating",
       "mart_refs": [
-        "inpa_bandi__mart_trend_anno",
-        "inpa_bandi__mart_scadenze_calendario",
-        "inpa_bandi__mart_efficienza_ente",
-        "inpa_bandi__mart_profili_ricercati",
-        "inpa_bandi__mart_geografia_bandi",
-        "inpa_bandi__mart_stipendi"
+        "inpa_bandi_open__mart_enti",
+        "inpa_bandi_open__mart_geografia_bandi",
+        "inpa_bandi_open__mart_profili_ricercati",
+        "inpa_bandi_open__mart_scadenze_calendario",
+        "inpa_bandi_open__mart_trend_anno",
+        "inpa_bandi_open__mart_tipo_procedura"
+      ]
+    },
+    {
+      "slug": "inpa_bandi_closed",
+      "name": "Inpa Bandi Closed",
+      "description": "Bandi chiusi del Portale inPA — archivio storico concorsi",
+      "source": "",
+      "source_id": "inpa_reclutamento",
+      "period": {
+        "start": 2026,
+        "end": 2026
+      },
+      "tags": [
+        "pa",
+        "concorsi",
+        "reclutamento",
+        "lavoro",
+        "archivio"
+      ],
+      "category": "pa",
+      "columns": [
+        {
+          "name": "id",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Identificativo univoco del bando"
+        },
+        {
+          "name": "titolo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Titolo del bando"
+        },
+        {
+          "name": "ente",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Ente pubblicatore"
+        },
+        {
+          "name": "regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Regione"
+        },
+        {
+          "name": "status",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Stato del bando"
+        },
+        {
+          "name": "num_posti",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Numero posti"
+        },
+        {
+          "name": "data_pubblicazione",
+          "type": "DATE",
+          "role": "dimension",
+          "description": "Data pubblicazione"
+        },
+        {
+          "name": "data_scadenza",
+          "type": "DATE",
+          "role": "dimension",
+          "description": "Data scadenza"
+        }
+      ],
+      "location": {
+        "clean_parquet": "gs://dataciviclab-clean/inpa-reclutamento/inpa_bandi_closed/2026/inpa_bandi_closed_2026_clean.parquet"
+      },
+      "stage": "clean",
+      "mart_refs": [
+        "inpa_bandi_closed__mart_trend_anno"
       ]
     },
     {
@@ -271,62 +347,52 @@
   ],
   "marts": [
     {
-      "slug": "inpa_bandi__mart_efficienza_ente",
-      "dataset": "inpa_bandi",
-      "table": "mart_efficienza_ente",
+      "slug": "inpa_bandi_open__mart_enti",
+      "dataset": "inpa_bandi_open",
+      "table": "mart_enti",
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-mart/inpa-reclutamento/inpa_bandi/2026/mart_efficienza_ente.parquet",
+        "path": "gs://dataciviclab-mart/inpa-reclutamento/inpa_bandi_open/2026/mart_efficienza_ente.parquet",
         "multi_file": false
       }
     },
     {
-      "slug": "inpa_bandi__mart_geografia_bandi",
-      "dataset": "inpa_bandi",
+      "slug": "inpa_bandi_open__mart_geografia_bandi",
+      "dataset": "inpa_bandi_open",
       "table": "mart_geografia_bandi",
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-mart/inpa-reclutamento/inpa_bandi/2026/mart_geografia_bandi.parquet",
+        "path": "gs://dataciviclab-mart/inpa-reclutamento/inpa_bandi_open/2026/mart_geografia_bandi.parquet",
         "multi_file": false
       }
     },
     {
-      "slug": "inpa_bandi__mart_profili_ricercati",
-      "dataset": "inpa_bandi",
+      "slug": "inpa_bandi_open__mart_profili_ricercati",
+      "dataset": "inpa_bandi_open",
       "table": "mart_profili_ricercati",
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-mart/inpa-reclutamento/inpa_bandi/2026/mart_profili_ricercati.parquet",
+        "path": "gs://dataciviclab-mart/inpa-reclutamento/inpa_bandi_open/2026/mart_profili_ricercati.parquet",
         "multi_file": false
       }
     },
     {
-      "slug": "inpa_bandi__mart_scadenze_calendario",
-      "dataset": "inpa_bandi",
-      "table": "mart_scadenze_prossime",
+      "slug": "inpa_bandi_open__mart_scadenze_calendario",
+      "dataset": "inpa_bandi_open",
+      "table": "mart_scadenze_calendario",
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-mart/inpa-reclutamento/inpa_bandi/2026/mart_scadenze_prossime.parquet",
+        "path": "gs://dataciviclab-mart/inpa-reclutamento/inpa_bandi_open/2026/mart_scadenze_prossime.parquet",
         "multi_file": false
       }
     },
     {
-      "slug": "inpa_bandi__mart_stipendi",
-      "dataset": "inpa_bandi",
-      "table": "mart_stipendi",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/inpa-reclutamento/inpa_bandi/2026/mart_stipendi.parquet",
-        "multi_file": false
-      }
-    },
-    {
-      "slug": "inpa_bandi__mart_trend_anno",
-      "dataset": "inpa_bandi",
+      "slug": "inpa_bandi_open__mart_trend_anno",
+      "dataset": "inpa_bandi_open",
       "table": "mart_trend_anno",
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-mart/inpa-reclutamento/inpa_bandi/2026/mart_trend_anno.parquet",
+        "path": "gs://dataciviclab-mart/inpa-reclutamento/inpa_bandi_open/2026/mart_trend_anno.parquet",
         "multi_file": false
       }
     },
@@ -379,6 +445,18 @@
         "path": "gs://dataciviclab-mart/inpa-reclutamento/inpa_insight/2026/mart_trasparenza_ente.parquet",
         "multi_file": false
       }
+    },
+    {
+      "slug": "inpa_bandi_open__mart_tipo_procedura",
+      "dataset": "inpa_bandi_open",
+      "table": "mart_tipo_procedura",
+      "path": "gs://dataciviclab-mart/inpa-reclutamento/inpa_bandi_open/2026/mart_tipo_procedura.parquet"
+    },
+    {
+      "slug": "inpa_bandi_closed__mart_trend_anno",
+      "dataset": "inpa_bandi_closed",
+      "table": "mart_trend_anno",
+      "path": "gs://dataciviclab-mart/inpa-reclutamento/inpa_bandi_closed/2026/mart_trend_anno.parquet"
     }
   ],
   "signals": [
@@ -408,10 +486,10 @@
       }
     },
     {
-      "id": "inpa_bandi",
+      "id": "inpa_bandi_open",
       "source_id": "inpa_reclutamento",
       "status": "ok",
-      "label": "inpa_bandi",
+      "label": "inpa_bandi_open",
       "detail": "anno 2026 — mart: si",
       "action": "",
       "run": {
@@ -466,7 +544,7 @@
         "label": "Provincia",
         "datasets": [
           {
-            "slug": "inpa_bandi",
+            "slug": "inpa_bandi_open",
             "name": "Inpa Bandi",
             "column": "provincia",
             "semantic_type": "province_code"
@@ -481,7 +559,7 @@
         "label": "Regione",
         "datasets": [
           {
-            "slug": "inpa_bandi",
+            "slug": "inpa_bandi_open",
             "name": "Inpa Bandi",
             "column": "regione",
             "semantic_type": "region_code"

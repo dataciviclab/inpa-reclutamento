@@ -9,7 +9,8 @@ import pytest
 def test_datasets_exist():
     """Verify dataset configs exist."""
     base = pathlib.Path(__file__).parent.parent
-    assert (base / "datasets" / "inpa-bandi" / "dataset.yml").exists()
+    assert (base / "datasets" / "inpa-bandi-open" / "dataset.yml").exists()
+    assert (base / "datasets" / "inpa-bandi-closed" / "dataset.yml").exists()
     assert (base / "datasets" / "inpa-comunicazioni" / "dataset.yml").exists()
     assert (base / "compose" / "inpa-insight" / "dataset.yml").exists()
 
