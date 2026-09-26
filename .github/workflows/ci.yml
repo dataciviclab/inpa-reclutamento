@@ -14,9 +14,9 @@ jobs:
 
       - uses: dataciviclab/.github/actions/python-setup@main
         with:
-          extras: "dev,pipeline"
+          install-extras: "dev,pipeline"
 
-      - uses: dataciviclab/.github/.github/actions/python-ci@main
+      - uses: dataciviclab/.github/actions/python-ci@main
 
   dashboard:
     runs-on: ubuntu-latest
@@ -25,7 +25,7 @@ jobs:
 
       - uses: dataciviclab/.github/actions/python-setup@main
         with:
-          extras: "dashboard"
+          install-extras: "dashboard"
 
       - name: Dashboard smoke test
         run: python -m py_compile dashboard/app.py
