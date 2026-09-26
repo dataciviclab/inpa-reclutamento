@@ -8,15 +8,6 @@ on:
 
 jobs:
   audit:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7
-      
-      - name: Python setup
-        uses: dataciviclab/.github/actions/python-setup@main
-      
-      - name: Install dependencies
-        run: pip install -e ".[dev]"
-      
-      - name: Test audit
-        uses: dataciviclab/.github/.github/workflows/test-audit-reusable.yml@main
+    uses: dataciviclab/.github/.github/workflows/test-audit-reusable.yml@main
+    with:
+      test-dirs: "tests"
