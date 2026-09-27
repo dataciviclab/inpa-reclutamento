@@ -261,7 +261,7 @@
       "location": {
         "clean_parquet": "gs://dataciviclab-clean/inpa-reclutamento/inpa_bandi_closed/2026/inpa_bandi_closed_2026_clean.parquet"
       },
-      "stage": "clean",
+      "stage": "incubating",
       "mart_refs": [
         "inpa_bandi_closed__mart_trend_anno"
       ]
