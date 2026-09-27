@@ -25,6 +25,8 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - uses: dataciviclab/.github/actions/python-setup@main
+        with:
+          install-extras: "dev,pipeline"
       - run: make check
 
   dashboard:
