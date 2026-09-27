@@ -83,10 +83,18 @@ jobs:
         env:
           TOOLKIT_ALLOW_SCRIPT_SOURCE: 1
 
+      - name: GCS auth (WIF)
+        uses: google-github-actions/auth@v3
+        id: gcp-auth
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+
       - name: GCS auth
         uses: dataciviclab/.github/actions/gcs-auth@main
 
       - name: Sync to GCS
+        if: steps.gcs.outputs.ready == 'true'
         run: |
           gsutil -m rsync -r -x '_run/|_validate/|metadata.json' out/data/clean/ gs://dataciviclab-clean/inpa-reclutamento/
           gsutil -m rsync -r -x '_run/|_validate/|metadata.json' out/data/mart/ gs://dataciviclab-mart/inpa-reclutamento/
