@@ -19,5 +19,6 @@ jobs:
       extra-env: "TOOLKIT_ALLOW_SCRIPT_SOURCE=1"
     permissions:
       contents: write
+      pull-requests: write
       id-token: write
     secrets: inherit
