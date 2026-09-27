@@ -41,7 +41,7 @@ GROUP BY ente ORDER BY posti DESC LIMIT 10;
 ```
 
 **Dashboard interattiva** — esplora i dati senza codice:
-[dataciviclab-inpa-reclutamento.streamlit.app](https://dataciviclab-inpa-reclutamento.streamlit.app/)
+[dcl-inpa.streamlit.app](https://dcl-inpa.streamlit.app/)
 
 ## Struttura
 
@@ -59,7 +59,7 @@ tests/                   test suite
 
 ## Dashboard
 
-La dashboard è disponibile su [Streamlit Community Cloud](https://dataciviclab-inpa-reclutamento.streamlit.app/).
+La dashboard è disponibile su [Streamlit Community Cloud](https://dcl-inpa.streamlit.app/).
 
 4 pagine: Panoramica, Dove e Chi, Cerca Bandi, Trasparenza.
 
@@ -91,7 +91,7 @@ make dashboard
 
 Hai trovato un problema o vuoi contribuire?
 
-- **Discussioni**: [Apri una Discussion](https://github.com/dataciviclab/inpa-reclutamento/discussions) per domande, suggerimenti, analisi
+- **Discussioni**: [Apri una Discussion](https://github.com/dataciviclab/inpa-reclutamento/issues) per domande, suggerimenti, analisi
 - **Bug**: [Segnala un Issue](https://github.com/dataciviclab/inpa-reclutamento/issues) con il template bug report
 - **Feature**: [Proponi una novità](https://github.com/dataciviclab/inpa-reclutamento/issues) con il template feature request
 
