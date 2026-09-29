@@ -14,7 +14,7 @@ jobs:
     uses: dataciviclab/.github/.github/workflows/pipeline-reusable.yml@main
     with:
       repo-slug: inpa-reclutamento
-      run-command: "make run-bandi-open && make run-comunicazioni && make run-compose"
+      run-command: "make run-bandi-open && make run-comunicazioni"
       python-extra-packages: "-e .[pipeline]"
       extra-env: "TOOLKIT_ALLOW_SCRIPT_SOURCE=1"
     permissions:
