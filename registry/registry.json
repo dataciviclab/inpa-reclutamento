@@ -863,7 +863,7 @@
       "detail": "anno 2026 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20260929T104559Z_8a1aebc1",
+        "run_id": "20260929T122219Z_f71b5c74",
         "year": 2026,
         "status": "SUCCESS",
         "quality_score": {
@@ -872,18 +872,18 @@
           "mart": 100
         },
         "output_rows": {
-          "raw": 1690,
-          "clean": 1690,
-          "mart": 292
+          "raw": 1711,
+          "clean": 1711,
+          "mart": 294
         },
         "output_bytes": {
-          "raw": 1824568,
-          "clean": 411101,
-          "mart": 10350
+          "raw": 1841973,
+          "clean": 414459,
+          "mart": 10406
         },
-        "started_at": "2026-09-29T10:45:59.704023+00:00",
-        "finished_at": "2026-09-29T10:46:19.725791+00:00",
-        "duration_seconds": 20.022
+        "started_at": "2026-09-29T12:22:19.995183+00:00",
+        "finished_at": "2026-09-29T12:22:37.187371+00:00",
+        "duration_seconds": 17.192
       }
     },
     {
@@ -894,7 +894,7 @@
       "detail": "anno 2026 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20260929T104620Z_3026b69d",
+        "run_id": "20260929T122237Z_ce135dbc",
         "year": 2026,
         "status": "SUCCESS",
         "quality_score": {
@@ -903,18 +903,18 @@
           "mart": 100
         },
         "output_rows": {
-          "raw": 5294,
-          "clean": 5294,
-          "mart": 1076
+          "raw": 5300,
+          "clean": 5300,
+          "mart": 1077
         },
         "output_bytes": {
-          "raw": 3621417,
-          "clean": 748287,
-          "mart": 13837
+          "raw": 3625662,
+          "clean": 749425,
+          "mart": 13883
         },
-        "started_at": "2026-09-29T10:46:20.203631+00:00",
-        "finished_at": "2026-09-29T10:46:46.093914+00:00",
-        "duration_seconds": 25.89
+        "started_at": "2026-09-29T12:22:37.666247+00:00",
+        "finished_at": "2026-09-29T12:23:03.548219+00:00",
+        "duration_seconds": 25.882
       }
     }
   ],
