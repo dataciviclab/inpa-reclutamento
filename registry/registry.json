@@ -2,7 +2,7 @@
   "schema_version": 1,
   "repo": "inpa-reclutamento",
   "source_repo": "dataciviclab/inpa-reclutamento",
-  "updated_at": "2026-10-10",
+  "updated_at": "2026-10-11",
   "datasets": [
     {
       "slug": "inpa_bandi_closed",
@@ -863,7 +863,7 @@
       "detail": "anno 2026 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20261010T120613Z_57340e27",
+        "run_id": "20261011T121930Z_ab863618",
         "year": 2026,
         "status": "SUCCESS",
         "quality_score": {
@@ -872,18 +872,18 @@
           "mart": 100
         },
         "output_rows": {
-          "raw": 1855,
-          "clean": 1855,
-          "mart": 313
+          "raw": 1790,
+          "clean": 1790,
+          "mart": 305
         },
         "output_bytes": {
-          "raw": 2068034,
-          "clean": 453831,
-          "mart": 11042
+          "raw": 1995355,
+          "clean": 441921,
+          "mart": 10937
         },
-        "started_at": "2026-10-10T12:06:13.629549+00:00",
-        "finished_at": "2026-10-10T12:06:28.533198+00:00",
-        "duration_seconds": 14.904
+        "started_at": "2026-10-11T12:19:30.181461+00:00",
+        "finished_at": "2026-10-11T12:19:46.363875+00:00",
+        "duration_seconds": 16.182
       }
     },
     {
@@ -894,7 +894,7 @@
       "detail": "anno 2026 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20261010T120628Z_305e6068",
+        "run_id": "20261011T121946Z_63e1deeb",
         "year": 2026,
         "status": "SUCCESS",
         "quality_score": {
@@ -909,12 +909,12 @@
         },
         "output_bytes": {
           "raw": 3848941,
-          "clean": 781819,
-          "mart": 14203
+          "clean": 781477,
+          "mart": 14202
         },
-        "started_at": "2026-10-10T12:06:28.925391+00:00",
-        "finished_at": "2026-10-10T12:06:57.947709+00:00",
-        "duration_seconds": 29.022
+        "started_at": "2026-10-11T12:19:46.801831+00:00",
+        "finished_at": "2026-10-11T12:20:15.810651+00:00",
+        "duration_seconds": 29.009
       }
     }
   ],
