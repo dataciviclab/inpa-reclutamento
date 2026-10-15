@@ -18,9 +18,11 @@ raw:
     - name: "inpa_closed"
       type: "script"
       client:
-        timeout: 1200
+        # workers=3 + retry: l'API inPA è lenta (~10-40s/pagina CLOSED) ma
+        # regge 3 richieste concorrenti. 3600s = margine su ~15-20min reali.
+        timeout: 3600
       args:
-        command: "python ../../scripts/harvest_bandi.py raw_input.csv --status CLOSED"
+        command: "python ../../scripts/harvest_bandi.py raw_input.csv --status CLOSED --workers 3"
         output: "raw_input.csv"
         filename: "raw_input.csv"
       primary: true
@@ -33,7 +35,29 @@ clean:
     header: true
     delim: ","
     encoding: "utf-8"
-  required_columns: [id, codice, titolo, figura_ricercata, data_pubblicazione, data_scadenza, num_posti, is_graduatoria, is_likely_update, tipo_procedura, categoria, settore, regione, provincia, ente, status, status_label, salary_min, salary_max, link_inpa]
+  required_columns:
+    [
+      id,
+      codice,
+      titolo,
+      figura_ricercata,
+      data_pubblicazione,
+      data_scadenza,
+      num_posti,
+      is_graduatoria,
+      is_likely_update,
+      tipo_procedura,
+      categoria,
+      settore,
+      regione,
+      provincia,
+      ente,
+      status,
+      status_label,
+      salary_min,
+      salary_max,
+      link_inpa,
+    ]
   validate:
     not_null: [id, titolo]
     primary_key: [id]
