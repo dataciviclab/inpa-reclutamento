@@ -60,3 +60,6 @@ SELECT
     enti_riferimento, categorie, settori, sedi,
     salary_min, salary_max, link_inpa
 FROM typed
+-- Dedup per PK: la paginazione parallela può duplicare un bando se l'API
+-- aggiorna tra due richieste (stesso motivo di inpa-bandi-closed).
+QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY data_pubblicazione, titolo) = 1

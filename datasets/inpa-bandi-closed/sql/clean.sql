@@ -55,3 +55,6 @@ SELECT
     enti_riferimento, categorie, settori, sedi,
     salary_min, salary_max, link_inpa
 FROM typed
+-- La paginazione parallela può far comparire lo stesso bando su due pagine
+-- se inPA aggiorna l'indice tra una richiesta e l'altra. PK = id.
+QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY data_pubblicazione, titolo) = 1
