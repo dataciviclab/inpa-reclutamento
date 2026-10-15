@@ -3,7 +3,7 @@ import pandas as pd
 import streamlit as st
 from sources import fmt_num, load_mart
 
-st.set_page_config(page_title="Trend — inPA", icon="📈", layout="wide")
+st.set_page_config(page_title="Trend — inPA", page_icon="📈", layout="wide")
 
 st.title("📈 Quanti concorsi la PA bandisce")
 st.caption(

@@ -23,7 +23,15 @@ def get_registry():
 
 @st.cache_data(ttl=300, show_spinner=False)
 def load_mart(table: str, slug: str = SLUG_BANDI):
-    return load_mart_table(slug, table, YEAR, prefix=PREFIX)
+    """Carica un mart; restituisce un DataFrame vuoto se l'artifact non esiste ancora."""
+    try:
+        return load_mart_table(slug, table, YEAR, prefix=PREFIX)
+    except Exception:
+        # Compose insight può non essere stato runnato in locale:
+        # le pagine che lo consumano mostrano un messaggio, non un crash.
+        import pandas as pd
+
+        return pd.DataFrame()
 
 
 @st.cache_data(ttl=300, show_spinner=False)
