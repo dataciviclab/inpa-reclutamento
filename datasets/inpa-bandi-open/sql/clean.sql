@@ -29,6 +29,8 @@ WITH typed AS (
         -- Aggiornamenti di procedura (calendari, prove, approvazioni graduatorie):
         -- non sono bandi nuovi; trascinano i posti del bando originario nei totali.
         -- I mart li escludono da conteggi e somme; la ricerca può comunque trovarli.
+        -- TRADEFF: regex volutamente ampio — preferibili falsi positivi a posti
+        -- gonfiati (stesso tradeoff di inpa-bandi-closed).
         CASE WHEN regexp_matches(
                     LOWER(normalize_string(titolo)),
                     'calendario.*(prova|prove)|avviso.*prova|prove orali|prova scritta'

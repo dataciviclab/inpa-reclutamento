@@ -23,12 +23,15 @@ def get_registry():
 
 @st.cache_data(ttl=300, show_spinner=False)
 def load_mart(table: str, slug: str = SLUG_BANDI):
-    """Carica un mart; restituisce un DataFrame vuoto se l'artifact non esiste ancora."""
+    """Carica un mart; restituisce un DataFrame vuoto se l'artifact non esiste.
+
+    Solo per la dashboard: se il compose non è runnato in locale, le pagine
+    mostrano un messaggio invece di crashare. La pipeline toolkit non passa
+    da qui — lì un artefatto mancante resta un errore (corretto).
+    """
     try:
         return load_mart_table(slug, table, YEAR, prefix=PREFIX)
     except Exception:
-        # Compose insight può non essere stato runnato in locale:
-        # le pagine che lo consumano mostrano un messaggio, non un crash.
         import pandas as pd
 
         return pd.DataFrame()

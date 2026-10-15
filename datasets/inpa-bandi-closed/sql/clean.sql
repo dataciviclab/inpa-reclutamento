@@ -23,7 +23,11 @@ WITH typed AS (
         CASE WHEN cast_int(num_posti) IS NOT NULL
                   AND cast_int(num_posti) > 50000
              THEN TRUE ELSE FALSE END                                        AS is_graduatoria,
-        -- Aggiornamenti di procedura: non sono bandi nuovi (vedi inpa-bandi-open)
+        -- Aggiornamenti di procedura: non sono bandi nuovi (vedi inpa-bandi-open).
+        -- TRADEFF: il regex è volutamente ampio (contingente, precisazion,
+        -- scorrimento…) — preferibile qualche falso positivo a posti gonfiati
+        -- dai concors scuola nazionali duplicati. Tenere d'occhio i falsi
+        -- positivi se qualcuno segnala bandi legittimi non trovati nei mart.
         CASE WHEN regexp_matches(
                     LOWER(normalize_string(titolo)),
                     'calendario.*(prova|prove)|avviso.*prova|prove orali|prova scritta'
