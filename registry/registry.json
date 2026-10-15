@@ -2,7 +2,7 @@
   "schema_version": 1,
   "repo": "inpa-reclutamento",
   "source_repo": "dataciviclab/inpa-reclutamento",
-  "updated_at": "2026-10-14",
+  "updated_at": "2026-10-15",
   "datasets": [
     {
       "slug": "inpa_bandi_closed",
@@ -863,7 +863,7 @@
       "detail": "anno 2026 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20261014T112523Z_72d216dc",
+        "run_id": "20261015T110214Z_a2c48d60",
         "year": 2026,
         "status": "SUCCESS",
         "quality_score": {
@@ -872,18 +872,18 @@
           "mart": 100
         },
         "output_rows": {
-          "raw": 1910,
-          "clean": 1910,
-          "mart": 327
+          "raw": 1917,
+          "clean": 1917,
+          "mart": 325
         },
         "output_bytes": {
-          "raw": 2086421,
-          "clean": 458355,
-          "mart": 11178
+          "raw": 2079446,
+          "clean": 456094,
+          "mart": 11038
         },
-        "started_at": "2026-10-14T11:25:23.691451+00:00",
-        "finished_at": "2026-10-14T11:26:40.078749+00:00",
-        "duration_seconds": 76.387
+        "started_at": "2026-10-15T11:02:14.893311+00:00",
+        "finished_at": "2026-10-15T11:02:43.893028+00:00",
+        "duration_seconds": 29.0
       }
     },
     {
@@ -894,7 +894,7 @@
       "detail": "anno 2026 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20261014T112640Z_a04f345b",
+        "run_id": "20261015T110244Z_df42a0e7",
         "year": 2026,
         "status": "SUCCESS",
         "quality_score": {
@@ -903,18 +903,18 @@
           "mart": 100
         },
         "output_rows": {
-          "raw": 5714,
-          "clean": 5714,
-          "mart": 1127
+          "raw": 5753,
+          "clean": 5753,
+          "mart": 1134
         },
         "output_bytes": {
-          "raw": 3902122,
-          "clean": 792076,
-          "mart": 14350
+          "raw": 3922671,
+          "clean": 795203,
+          "mart": 14435
         },
-        "started_at": "2026-10-14T11:26:40.550234+00:00",
-        "finished_at": "2026-10-14T11:27:41.097159+00:00",
-        "duration_seconds": 60.547
+        "started_at": "2026-10-15T11:02:44.267413+00:00",
+        "finished_at": "2026-10-15T11:03:48.927474+00:00",
+        "duration_seconds": 64.66
       }
     }
   ],
