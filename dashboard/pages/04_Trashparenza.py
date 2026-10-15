@@ -101,8 +101,9 @@ with tab_proc:
         )
 
         st.caption(
-            "Solo il2-3% delle procedure riceve comunicazioni. "
-            "La PA pubblica il bando ma non dice mai chi è stato assunto."
+            "Solo il 2–3% delle procedure riceve comunicazioni su inPA. "
+            "Gli esiti possono comparire sul sito dell'ente o in Gazzetta Ufficiale, "
+            "ma sul portale ufficiale il quadro è questo."
         )
     else:
         st.info("Dati non disponibili")

@@ -28,6 +28,29 @@ def test_mart_sql_reads_from_clean_input():
 
 
 @pytest.mark.policy
+def test_marts_exclude_likely_updates():
+    """Aggregate marts must exclude procedure updates (calendari, prove…)."""
+    open_sql = BASE / "datasets" / "inpa-bandi-open" / "sql"
+    for name in [
+        "mart_enti.sql",
+        "mart_scadenze_calendario.sql",
+        "mart_geografia_bandi.sql",
+        "mart_profili_ricercati.sql",
+        "mart_tipo_procedura.sql",
+    ]:
+        sql = (open_sql / name).read_text().lower()
+        assert "is_likely_update" in sql, f"{name} must filter is_likely_update"
+
+
+@pytest.mark.policy
+def test_clean_defines_is_likely_update():
+    """Both clean.sql must produce the is_likely_update flag."""
+    for slug in ["inpa-bandi-open", "inpa-bandi-closed"]:
+        sql = (BASE / "datasets" / slug / "sql" / "clean.sql").read_text().lower()
+        assert "is_likely_update" in sql, f"{slug}/clean.sql must define is_likely_update"
+
+
+@pytest.mark.policy
 def test_compose_dataset_yml_references_closed():
     """Verify compose references inpa-bandi-closed (trasparenza needs closed data)."""
     import yaml

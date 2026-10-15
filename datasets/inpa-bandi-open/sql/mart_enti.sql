@@ -10,6 +10,7 @@ SELECT
     MAX(data_pubblicazione) AS ultimo_bando
 FROM clean_input
 WHERE is_graduatoria = FALSE
+  AND is_likely_update = FALSE
   AND ente IS NOT NULL
   AND num_posti IS NOT NULL
   AND num_posti > 0

@@ -19,6 +19,7 @@ pages = {
         st.Page("pages/02_DoveChi.py", title="Dove e Chi", icon="🗺️"),
         st.Page("pages/03_Cerca.py", title="Cerca Bandi", icon="🔍"),
         st.Page("pages/04_Trashparenza.py", title="Trasparenza", icon="📈"),
+        st.Page("pages/06_Trend.py", title="Trend", icon="📉"),
         st.Page("pages/05_SQL.py", title="SQL", icon="💻"),
     ],
 }

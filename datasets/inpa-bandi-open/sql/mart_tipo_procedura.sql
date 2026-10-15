@@ -9,6 +9,7 @@ SELECT
 FROM clean_input
 WHERE status = 'OPEN'
   AND NOT is_graduatoria
+  AND is_likely_update = FALSE
   AND tipo_procedura IS NOT NULL
 GROUP BY 1
 ORDER BY 2 DESC

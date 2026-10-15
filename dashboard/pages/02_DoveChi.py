@@ -20,6 +20,10 @@ tab_geo, tab_profi, tab_enti = st.tabs(["📍 Dove", "👤 Chi", "🏛️ Enti"]
 
 with tab_geo:
     st.subheader("Bandi per regione")
+    st.caption(
+        "Solo bandi con una singola regione indicata — multi-sede e senza "
+        "regione (~8% del totale) non sono mostrati."
+    )
 
     if len(df_geo) > 0:
         c1, c2 = st.columns([2, 1])
@@ -44,6 +48,16 @@ with tab_geo:
 
 with tab_profi:
     st.subheader("Profili professionali più ricercati")
+
+    if len(df_prof) > 0:
+        n_tot = int(df_prof["n_bandi"].sum())
+        n_altro = int(df_prof.loc[df_prof["profilo"] == "Altro", "n_bandi"].sum())
+        if n_tot > 0:
+            st.caption(
+                f"Il grafico esclude il bucket «Altro» "
+                f"({n_altro} bandi, {100 * n_altro // n_tot}% del totale): "
+                "molte figure non rientrano nei profili standard."
+            )
 
     if len(df_prof) > 0:
         c1, c2 = st.columns([2, 1])

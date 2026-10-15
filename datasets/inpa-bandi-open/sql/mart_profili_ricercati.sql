@@ -35,6 +35,8 @@ SELECT
     SUM(num_posti) AS posti_totali,
     COUNT(DISTINCT ente) AS enti_diversi
 FROM clean_input
-WHERE status = 'OPEN' AND NOT is_graduatoria
+WHERE status = 'OPEN'
+  AND NOT is_graduatoria
+  AND is_likely_update = FALSE
 GROUP BY 1
 ORDER BY 2 DESC

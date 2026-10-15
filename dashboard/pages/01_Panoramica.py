@@ -55,6 +55,10 @@ st.markdown(
     f"**{fmt_num(n_bandi)} bandi** attivi per **{fmt_num(n_posti)} posti** "
     f"in **{len(df_geo)} regioni**"
 )
+st.caption(
+    "Escluse graduatorie e aggiornamenti di procedura (calendari prove, "
+    "approvazioni graduatorie): non sono bandi nuovi."
+)
 
 # ── Insight principale ─────────────────────────────────────────
 

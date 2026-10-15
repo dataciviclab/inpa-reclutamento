@@ -9,6 +9,7 @@ SELECT
 FROM clean_input
 WHERE status = 'OPEN'
   AND NOT is_graduatoria
+  AND is_likely_update = FALSE
   AND regione IS NOT NULL
   AND regione NOT LIKE '%|%'
 GROUP BY 1

@@ -26,6 +26,16 @@ WITH typed AS (
         CASE WHEN cast_int(num_posti) IS NOT NULL
                   AND cast_int(num_posti) > 50000
              THEN TRUE ELSE FALSE END                                        AS is_graduatoria,
+        -- Aggiornamenti di procedura (calendari, prove, approvazioni graduatorie):
+        -- non sono bandi nuovi; trascinano i posti del bando originario nei totali.
+        -- I mart li escludono da conteggi e somme; la ricerca può comunque trovarli.
+        CASE WHEN regexp_matches(
+                    LOWER(normalize_string(titolo)),
+                    'calendario.*(prova|prove)|avviso.*prova|prove orali|prova scritta'
+                    '|approvazione graduatoria|rettifica|scorrimento'
+                    '|pubblicazione elenco|elenco integrale|elenco.*idonei'
+             )
+             THEN TRUE ELSE FALSE END                                        AS is_likely_update,
         normalize_string(status)                                                AS status,
         normalize_string(status_label)                                          AS status_label,
         normalize_string(categoria)                                             AS categoria,
@@ -45,7 +55,7 @@ WITH typed AS (
 SELECT
     id, codice, titolo, figura_ricercata, descrizione,
     data_pubblicazione, data_scadenza, data_visibilita, tipo_procedura, num_posti,
-    is_graduatoria,
+    is_graduatoria, is_likely_update,
     status, status_label, categoria, settore, regione, provincia, ente,
     enti_riferimento, categorie, settori, sedi,
     salary_min, salary_max, link_inpa

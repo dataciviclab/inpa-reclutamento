@@ -6,5 +6,6 @@ SELECT
     COUNT(DISTINCT ente)                 AS enti_distinti
 FROM clean_input
 WHERE data_pubblicazione IS NOT NULL
+  AND is_likely_update = FALSE
 GROUP BY 1
 ORDER BY 1
