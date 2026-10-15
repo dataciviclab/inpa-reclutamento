@@ -13,7 +13,7 @@ def ordered_bar(df, x, y, height=300):
         x=alt.X(y, sort="-x", title=y),
         y=alt.Y(x, sort="-x", title=None),
     ).properties(height=height)
-    st.altair_chart(chart, use_container_width=True)
+    st.altair_chart(chart, width="stretch")
 
 
 tab_geo, tab_profi, tab_enti = st.tabs(["📍 Dove", "👤 Chi", "🏛️ Enti"])
@@ -40,7 +40,7 @@ with tab_geo:
                     "posti_totali": "Posti",
                     "enti_diversi": "Enti",
                 }),
-                use_container_width=True,
+                width="stretch",
                 hide_index=True,
             )
     else:
@@ -74,7 +74,7 @@ with tab_profi:
                     "posti_totali": "Posti",
                     "enti_diversi": "Enti",
                 }),
-                use_container_width=True,
+                width="stretch",
                 hide_index=True,
             )
     else:
@@ -102,7 +102,7 @@ with tab_enti:
                     "totale_posti": "Posti",
                     "media_posti_per_bando": "Media",
                 }),
-                use_container_width=True,
+                width="stretch",
                 hide_index=True,
             )
     else:

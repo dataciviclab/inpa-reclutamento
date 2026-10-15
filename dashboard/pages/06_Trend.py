@@ -62,7 +62,7 @@ chart = (
     )
     .properties(height=360)
 )
-st.altair_chart(chart, use_container_width=True)
+st.altair_chart(chart, width="stretch")
 
 st.caption(
     "Il 2026 è l'anno in corso: il conteggio crescerà fino a dicembre. "
@@ -77,4 +77,4 @@ show = agg[["anno", "num_bandi", "posti_totali"]].copy()
 show["num_bandi"] = show["num_bandi"].astype(int)
 show["posti_totali"] = show["posti_totali"].fillna(0).astype(int)
 show.columns = ["Anno", "Bandi", "Posti"]
-st.dataframe(show, use_container_width=True, hide_index=True)
+st.dataframe(show, width="stretch", hide_index=True)

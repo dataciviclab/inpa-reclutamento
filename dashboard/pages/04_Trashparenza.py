@@ -37,7 +37,7 @@ with tab_trasp:
                 "ente": "Ente",
                 "totale_bandi_chiusi": "Bandi chiusi (mai pubblicato)",
             }),
-            use_container_width=True,
+            width="stretch",
             hide_index=True,
         )
 
@@ -51,7 +51,7 @@ with tab_trasp:
                     "totale_bandi_chiusi": "Bandi chiusi",
                     "bandi_con_comunicazioni": "Con comunicazioni",
                 }),
-                use_container_width=True,
+                width="stretch",
                 hide_index=True,
             )
         else:
@@ -75,7 +75,7 @@ with tab_tempi:
                 "n_bandi_con_comunicazioni": "Bandi con com.",
                 "mediana_giorni": "Mediana giorni",
             }),
-            use_container_width=True,
+            width="stretch",
             hide_index=True,
         )
     else:
@@ -96,7 +96,7 @@ with tab_proc:
                 "pct_con_comunicazioni": "% con com.",
                 "mediana_gg": "Mediana giorni",
             }),
-            use_container_width=True,
+            width="stretch",
             hide_index=True,
         )
 
