@@ -23,6 +23,20 @@ WITH typed AS (
         CASE WHEN cast_int(num_posti) IS NOT NULL
                   AND cast_int(num_posti) > 50000
              THEN TRUE ELSE FALSE END                                        AS is_graduatoria,
+        -- Aggiornamenti di procedura: non sono bandi nuovi (vedi inpa-bandi-open).
+        -- TRADEFF: il regex è volutamente ampio (contingente, precisazion,
+        -- scorrimento…) — preferibile qualche falso positivo a posti gonfiati
+        -- dai concors scuola nazionali duplicati. Tenere d'occhio i falsi
+        -- positivi se qualcuno segnala bandi legittimi non trovati nei mart.
+        CASE WHEN regexp_matches(
+                    LOWER(normalize_string(titolo)),
+                    'calendario.*(prova|prove)|avviso.*prova|prove orali|prova scritta'
+                    '|approvazione graduatoria|rettifica|scorrimento'
+                    '|pubblicazione elenco|elenco integrale|elenco.*idonei'
+                    '|rideterminazione|aggregazione.*procedur'
+                    '|aggiornamento.*graduator|precisazion|contingente'
+             )
+             THEN TRUE ELSE FALSE END                                        AS is_likely_update,
         normalize_string(status)                                                AS status,
         normalize_string(status_label)                                          AS status_label,
         normalize_string(categoria)                                             AS categoria,
@@ -42,8 +56,11 @@ WITH typed AS (
 SELECT
     id, codice, titolo, figura_ricercata, descrizione,
     data_pubblicazione, data_scadenza, data_visibilita, tipo_procedura, num_posti,
-    is_graduatoria,
+    is_graduatoria, is_likely_update,
     status, status_label, categoria, settore, regione, provincia, ente,
     enti_riferimento, categorie, settori, sedi,
     salary_min, salary_max, link_inpa
 FROM typed
+-- La paginazione parallela può far comparire lo stesso bando su due pagine
+-- se inPA aggiorna l'indice tra una richiesta e l'altra. PK = id.
+QUALIFY ROW_NUMBER() OVER (PARTITION BY id ORDER BY data_pubblicazione, titolo) = 1

@@ -8,6 +8,7 @@ SELECT
     STRING_AGG(DISTINCT categoria, ', ' ORDER BY categoria) AS categorie
 FROM clean_input
 WHERE status = 'OPEN'
+  AND is_likely_update = FALSE
   AND data_scadenza IS NOT NULL
   AND data_scadenza >= CURRENT_DATE
 GROUP BY data_scadenza

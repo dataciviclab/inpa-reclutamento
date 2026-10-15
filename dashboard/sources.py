@@ -23,7 +23,18 @@ def get_registry():
 
 @st.cache_data(ttl=300, show_spinner=False)
 def load_mart(table: str, slug: str = SLUG_BANDI):
-    return load_mart_table(slug, table, YEAR, prefix=PREFIX)
+    """Carica un mart; restituisce un DataFrame vuoto se l'artifact non esiste.
+
+    Solo per la dashboard: se il compose non è runnato in locale, le pagine
+    mostrano un messaggio invece di crashare. La pipeline toolkit non passa
+    da qui — lì un artefatto mancante resta un errore (corretto).
+    """
+    try:
+        return load_mart_table(slug, table, YEAR, prefix=PREFIX)
+    except Exception:
+        import pandas as pd
+
+        return pd.DataFrame()
 
 
 @st.cache_data(ttl=300, show_spinner=False)
@@ -41,8 +52,8 @@ def load_regioni():
     )
 
 
-@st.cache_data(ttl=300, show_spinner=False)
-def search_bandi(search="", regione=None, tipo=None, max_giorni=180):
+def _search_where(search="", regione=None, tipo=None, max_giorni=180):
+    """Clause WHERE condivisa tra search e count (stessa semantica)."""
     where = ["status = 'OPEN'", "NOT is_graduatoria"]
     if search:
         s = search.replace("'", "''")
@@ -53,8 +64,31 @@ def search_bandi(search="", regione=None, tipo=None, max_giorni=180):
         where.append(f"tipo_procedura = '{tipo.replace(chr(39), chr(39)*2)}'")
     where.append("data_scadenza IS NOT NULL")
     where.append(f"data_scadenza <= CURRENT_DATE + INTERVAL '{max_giorni} days'")
-    sql = f"SELECT id, titolo, figura_ricercata, ente, regione, data_scadenza, CAST(num_posti AS INT) as posti, tipo_procedura FROM clean_input WHERE {' AND '.join(where)} ORDER BY data_scadenza LIMIT 200"
+    return " AND ".join(where)
+
+
+@st.cache_data(ttl=300, show_spinner=False)
+def search_bandi(search="", regione=None, tipo=None, max_giorni=180, limit=200):
+    where = _search_where(search, regione, tipo, max_giorni)
+    sql = (
+        "SELECT id, titolo, figura_ricercata, ente, regione, data_scadenza, "
+        f"CAST(num_posti AS INT) as posti, tipo_procedura FROM clean_input WHERE {where} "
+        f"ORDER BY data_scadenza LIMIT {int(limit)}"
+    )
     return query_clean(SLUG_BANDI, sql, years=[YEAR], prefix=PREFIX)
+
+
+@st.cache_data(ttl=300, show_spinner=False)
+def count_bandi(search="", regione=None, tipo=None, max_giorni=180):
+    """Totale reale dei risultati (indipendente dal LIMIT di pagina)."""
+    where = _search_where(search, regione, tipo, max_giorni)
+    df = query_clean(
+        SLUG_BANDI,
+        f"SELECT COUNT(*) AS n FROM clean_input WHERE {where}",
+        years=[YEAR],
+        prefix=PREFIX,
+    )
+    return int(df["n"].iloc[0]) if len(df) else 0
 
 
 @st.cache_data(ttl=300, show_spinner=False)

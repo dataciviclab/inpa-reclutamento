@@ -5,7 +5,7 @@ WITH bandi AS (
     SELECT
         id, codice, titolo, figura_ricercata, descrizione,
         data_pubblicazione, data_scadenza, data_visibilita,
-        tipo_procedura, num_posti, is_graduatoria,
+        tipo_procedura, num_posti, is_graduatoria, is_likely_update,
         status, status_label, categoria, settore, regione, provincia,
         ente, enti_riferimento, categorie, settori, sedi,
         salary_min, salary_max, link_inpa

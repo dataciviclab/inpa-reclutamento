@@ -1,4 +1,6 @@
 -- Mart trasparenza: % bandi con comunicazioni per ente
+-- Gli aggiornamenti di procedura (calendari, rideterminazioni…) non sono
+-- bandi nuovi: esclusi dal denominatore, altrimenti la % viene diluita.
 SELECT
     ente,
     COUNT(*) AS totale_bandi_chiusi,
@@ -6,6 +8,7 @@ SELECT
     ROUND(100.0 * SUM(ha_comunicazioni) / COUNT(*), 1) AS pct_trasparenza
 FROM clean_input
 WHERE NOT is_graduatoria
+  AND NOT is_likely_update
   AND ente IS NOT NULL
   AND data_scadenza < CURRENT_DATE
 GROUP BY ente

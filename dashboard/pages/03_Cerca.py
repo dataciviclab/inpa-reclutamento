@@ -2,7 +2,14 @@ import re
 
 import pandas as pd
 import streamlit as st
-from sources import fmt_num, load_bando, load_comunicazioni_bando, load_regioni, search_bandi
+from sources import (
+    count_bandi,
+    fmt_num,
+    load_bando,
+    load_comunicazioni_bando,
+    load_regioni,
+    search_bandi,
+)
 
 st.title("🔍 Cerca Bandi")
 
@@ -144,8 +151,14 @@ else:
         giorni = st.slider("Scadenza entro gg", 7, 180, 60)
 
     results = search_bandi(search, regione, tipo, giorni)
+    total = count_bandi(search, regione, tipo, giorni)
 
-    st.metric("Risultati", fmt_num(len(results)))
+    st.metric("Risultati", fmt_num(total))
+    if total > len(results):
+        st.caption(
+            f"Mostrati i primi {len(results)} risultati — "
+            "restringi la ricerca per vederne altri."
+        )
 
     if len(results) == 0:
         st.info("Nessun bando trovato.")

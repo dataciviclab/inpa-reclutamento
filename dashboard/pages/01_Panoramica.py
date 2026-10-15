@@ -21,7 +21,7 @@ def ordered_bar(df, x, y, height=300):
         x=alt.X(y, sort="-x", title=y),
         y=alt.Y(x, sort="-x", title=None),
     ).properties(height=height)
-    st.altair_chart(chart, use_container_width=True)
+    st.altair_chart(chart, width="stretch")
 
 n_bandi = int(df_cal["num_bandi"].sum()) if len(df_cal) > 0 else 0
 n_posti = int(df_cal["posti_totali"].sum()) if len(df_cal) > 0 else 0
@@ -54,6 +54,10 @@ st.title("🏛️ Bandi aperti nella PA")
 st.markdown(
     f"**{fmt_num(n_bandi)} bandi** attivi per **{fmt_num(n_posti)} posti** "
     f"in **{len(df_geo)} regioni**"
+)
+st.caption(
+    "Escluse graduatorie e aggiornamenti di procedura (calendari prove, "
+    "approvazioni graduatorie): non sono bandi nuovi."
 )
 
 # ── Insight principale ─────────────────────────────────────────
@@ -108,7 +112,7 @@ if len(df_proc) > 0:
                     "media_posti_per_bando": "Media",
                 }
             ),
-            use_container_width=True,
+            width="stretch",
             hide_index=True,
         )
 
@@ -131,6 +135,6 @@ if len(df_cal) > 0:
             x=alt.X("Data", title=None),
             y=alt.Y("Bandi", title="Bandi"),
         ).properties(height=150)
-        st.altair_chart(chart, use_container_width=True)
+        st.altair_chart(chart, width="stretch")
     else:
         st.info("Nessuna scadenza entro 14 giorni")

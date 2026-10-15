@@ -8,5 +8,6 @@ SELECT
     MEDIAN(giorni_prima_comunicazione)::INT AS mediana_gg
 FROM clean_input
 WHERE NOT is_graduatoria
+  AND NOT is_likely_update
 GROUP BY 1
 ORDER BY 6 DESC
