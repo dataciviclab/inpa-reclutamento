@@ -34,6 +34,8 @@ WITH typed AS (
                     'calendario.*(prova|prove)|avviso.*prova|prove orali|prova scritta'
                     '|approvazione graduatoria|rettifica|scorrimento'
                     '|pubblicazione elenco|elenco integrale|elenco.*idonei'
+                    '|rideterminazione|aggregazione.*procedur'
+                    '|aggiornamento.*graduator|precisazion|contingente'
              )
              THEN TRUE ELSE FALSE END                                        AS is_likely_update,
         normalize_string(status)                                                AS status,

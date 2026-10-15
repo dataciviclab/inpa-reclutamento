@@ -9,6 +9,7 @@ SELECT
 FROM clean_input
 WHERE giorni_prima_comunicazione > 0
   AND NOT is_graduatoria
+  AND NOT is_likely_update
   AND ente IS NOT NULL
 GROUP BY ente
 HAVING COUNT(*) >= 3
