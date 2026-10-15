@@ -66,7 +66,9 @@ st.altair_chart(chart, use_container_width=True)
 
 st.caption(
     "Il 2026 è l'anno in corso: il conteggio crescerà fino a dicembre. "
-    "Un bando può restare pubblicato su inPA anche dopo la scadenza."
+    "Un bando può restare pubblicato su inPA anche dopo la scadenza. "
+    "I «posti» sommano anche i concors scolastici nazionali da decine di "
+    "migliaia di posti — il conteggio bandi è più leggibile della somma."
 )
 
 st.divider()
