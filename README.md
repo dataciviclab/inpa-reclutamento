@@ -4,7 +4,7 @@ Dati aperti sul reclutamento della Pubblica Amministrazione italiana dal Portale
 
 ## Perché questi dati
 
-[inPA](https://www.inpa.gov.it/) è il portale ufficiale del reclutamento della PA, obbligatorio per tutti gli enti dal 2023. Questo dataset rende interrogabili i bandi di concorso, le comunicazioni di procedura e i tempi di assunzione di tutta la PA italiana — dati che finora restavano chiusi nella piattaforma.
+[inPA](https://www.inpa.gov.it/) è il portale ufficiale del reclutamento della PA, obbligatorio per tutti gli enti dal 2023. Questo dataset rende interrogabili i bandi di concorso, le comunicazioni di procedura e i tempi di assunzione pubblicati su inPA — dati che finora restavano chiusi nella piattaforma.
 
 ## Cosa contengono
 
@@ -15,7 +15,7 @@ Dati aperti sul reclutamento della Pubblica Amministrazione italiana dal Portale
 | `inpa_comunicazioni` | Comunicazioni di procedura (graduatorie, calendari, esiti) | Giornaliero |
 | `inpa_insight` | Analisi cross-dataset: trasparenza enti, tempi, procedure | Mensile |
 
-Copertura: **tutti gli enti PA italiani**, dal 2026. Dati harvestati dall'API pubblica inPA.
+Copertura: **gli enti che pubblicano su inPA**, dal 2026. Dati harvestati dall'API pubblica inPA. Non include i concorsi pubblicati solo in **Gazzetta Ufficiale, 4ª serie speciale** (es. molte aziende sanitarie e università): per cercarli serve la fonte GU.
 
 ## Domande che puoi porre
 
