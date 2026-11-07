@@ -28,12 +28,15 @@ class Session:
         timeout: int | None = None,
     ) -> Any:
         """POST e ritorna la ``requests.Response`` (o solleva RuntimeError)."""
+        # HttpClient non accetta ``timeout`` per-call (lo passa già a requests):
+        # per un timeout diverso si usa un client dedicato.
+        client = self._client if timeout is None else HttpClient(
+            timeout=timeout, max_retries=1
+        )
         kwargs: dict[str, Any] = {"params": params, "json": json, "data": data, "retries": 1}
-        if timeout is not None:
-            kwargs["timeout"] = timeout
         if self.headers:
             kwargs["headers"] = dict(self.headers)
-        result = self._client.post(url, **kwargs)
+        result = client.post(url, **kwargs)
         if result.response is None:
             raise RuntimeError(f"POST {url} fallita: {result.err}")
         return result.response
