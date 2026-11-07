@@ -18,7 +18,7 @@ import sys
 import time
 from pathlib import Path
 
-import requests
+from _http import Session
 
 API_BASE = "https://portale.inpa.gov.it/concorsi-smart/api"
 SEARCH_ENDPOINT = API_BASE + "/communication/user/public-area/search"
@@ -63,7 +63,7 @@ def harvest(size: int, pause: float) -> list[dict]:
         "effectiveDateTo": None,
         "companyName": "",
     }
-    session = requests.Session()
+    session = Session()
     session.headers.update(DEFAULT_HEADERS)
 
     first = session.post(SEARCH_ENDPOINT, params={"page": 0, "size": size}, json=body, timeout=60)
