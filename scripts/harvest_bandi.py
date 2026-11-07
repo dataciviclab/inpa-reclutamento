@@ -25,6 +25,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
 import requests
+from _http import Session
 
 API_BASE = "https://portale.inpa.gov.it/concorsi-smart/api"
 SEARCH_ENDPOINT = API_BASE + "/concorso-public-area/search-better"
@@ -168,7 +169,7 @@ def _flatten(item: dict) -> dict:
     }
 
 
-def fetch_page(session: requests.Session, body: dict, page: int, size: int) -> dict:
+def fetch_page(session: Session, body: dict, page: int, size: int) -> dict:
     """POST una pagina con retry: l'API inPA torna 500/timeout intermittente sulle pagine profonde."""
     last_exc: Exception | None = None
     for attempt in range(MAX_RETRIES):
@@ -208,7 +209,7 @@ def fetch_page(session: requests.Session, body: dict, page: int, size: int) -> d
 
 def _fetch_one_page(page: int, body: dict, size: int, pause: float, jitter: int = 0) -> list[dict]:
     """Fetch di una singola pagina con sessione dedicata (thread-safe)."""
-    local = requests.Session()
+    local = Session()
     local.headers.update(DEFAULT_HEADERS)
     if pause:
         time.sleep(pause + jitter * 0.1)
@@ -217,7 +218,7 @@ def _fetch_one_page(page: int, body: dict, size: int, pause: float, jitter: int 
 
 
 def harvest_status(
-    session: requests.Session,
+    session: Session,
     status: str,
     size: int,
     pause: float,
@@ -343,7 +344,7 @@ def main() -> int:
     )
     args = parser.parse_args()
 
-    session = requests.Session()
+    session = Session()
     session.headers.update(DEFAULT_HEADERS)
 
     rows = harvest_status(

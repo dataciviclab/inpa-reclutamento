@@ -14,6 +14,7 @@ import argparse
 import sys
 
 import requests
+from _http import Session
 
 API_BASE = "https://portale.inpa.gov.it/concorsi-smart/api"
 SEARCH_ENDPOINT = API_BASE + "/concorso-public-area/search-better"
@@ -48,7 +49,7 @@ REQUIRED_COMMS_FIELDS = {
 }
 
 
-def check_bandi(session: requests.Session, verbose: bool) -> bool:
+def check_bandi(session: Session, verbose: bool) -> bool:
     """Verifica endpoint bandi: raggiungibilità + struttura risposta."""
     body = {
         "text": "",
@@ -96,7 +97,7 @@ def check_bandi(session: requests.Session, verbose: bool) -> bool:
     return True
 
 
-def check_comunicazioni(session: requests.Session, verbose: bool) -> bool:
+def check_comunicazioni(session: Session, verbose: bool) -> bool:
     """Verifica endpoint comunicazioni: raggiungibilità + struttura risposta."""
     body = {
         "subject": "",
@@ -143,7 +144,7 @@ def main() -> int:
     parser.add_argument("--verbose", action="store_true", help="mostra dettagli")
     args = parser.parse_args()
 
-    session = requests.Session()
+    session = Session()
     session.headers.update(DEFAULT_HEADERS)
 
     ok_bandi = check_bandi(session, args.verbose)
