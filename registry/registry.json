@@ -1,19 +1,18 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "repo": "inpa-reclutamento",
   "source_repo": "dataciviclab/inpa-reclutamento",
-  "updated_at": "2026-11-23",
+  "updated_at": "2026-11-25",
+  "gcs": {
+    "clean": "year",
+    "prefix": "inpa-reclutamento/"
+  },
   "datasets": [
     {
       "slug": "inpa_bandi_closed",
       "name": "Inpa Bandi Closed",
       "description": "Bandi chiusi del Portale inPA — archivio storico concorsi",
-      "source": "",
       "source_id": "inpa_reclutamento",
-      "period": {
-        "start": 2026,
-        "end": 2026
-      },
       "tags": [
         "pa",
         "concorsi",
@@ -22,186 +21,161 @@
         "archivio"
       ],
       "category": "pa",
+      "period": {
+        "start": 2026,
+        "end": 2026
+      },
+      "partitions": {
+        "2026": 78138
+      },
       "columns": [
         {
           "name": "id",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "codice",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "titolo",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "figura_ricercata",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "descrizione",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "data_pubblicazione",
           "type": "DATE",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "data_scadenza",
           "type": "DATE",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "data_visibilita",
           "type": "DATE",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "tipo_procedura",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "num_posti",
           "type": "INTEGER",
-          "role": "metric",
-          "description": ""
+          "role": "metric"
         },
         {
           "name": "is_graduatoria",
           "type": "BOOLEAN",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "is_likely_update",
           "type": "BOOLEAN",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "status",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "status_label",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "categoria",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "settore",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "",
           "semantic_type": "region_code"
         },
         {
           "name": "provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "",
           "semantic_type": "province_code"
         },
         {
           "name": "ente",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "enti_riferimento",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "categorie",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "settori",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "sedi",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "salary_min",
           "type": "DOUBLE",
-          "role": "metric",
-          "description": ""
+          "role": "metric"
         },
         {
           "name": "salary_max",
           "type": "DOUBLE",
-          "role": "metric",
-          "description": ""
+          "role": "metric"
         },
         {
           "name": "link_inpa",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         }
       ],
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-clean/inpa-reclutamento/inpa_bandi_closed/2026/inpa_bandi_closed_2026_clean.parquet",
-        "multi_file": false
-      },
-      "stage": "incubating",
       "mart_refs": [
         "inpa_bandi_closed__mart_trend_anno"
-      ]
+      ],
+      "last_run": {
+        "at": "2026-11-25T08:25:22.443223+00:00",
+        "year": 2026,
+        "status": "SUCCESS"
+      }
     },
     {
       "slug": "inpa_bandi_open",
       "name": "Inpa Bandi Open",
       "description": "Bandi aperti del Portale inPA — concorsi, mobilità e selezioni della PA",
-      "source": "",
       "source_id": "inpa_reclutamento",
-      "period": {
-        "start": 2026,
-        "end": 2026
-      },
       "tags": [
         "pa",
         "concorsi",
@@ -209,172 +183,147 @@
         "lavoro"
       ],
       "category": "pa",
+      "period": {
+        "start": 2026,
+        "end": 2026
+      },
+      "partitions": {
+        "2026": 1935
+      },
       "columns": [
         {
           "name": "id",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "codice",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "titolo",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "figura_ricercata",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "descrizione",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "data_pubblicazione",
           "type": "DATE",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "data_scadenza",
           "type": "DATE",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "data_visibilita",
           "type": "DATE",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "tipo_procedura",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "num_posti",
           "type": "INTEGER",
-          "role": "metric",
-          "description": ""
+          "role": "metric"
         },
         {
           "name": "is_graduatoria",
           "type": "BOOLEAN",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "is_likely_update",
           "type": "BOOLEAN",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "status",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "status_label",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "categoria",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "settore",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "",
           "semantic_type": "region_code"
         },
         {
           "name": "provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "",
           "semantic_type": "province_code"
         },
         {
           "name": "ente",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "enti_riferimento",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "categorie",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "settori",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "sedi",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "salary_min",
           "type": "DOUBLE",
-          "role": "metric",
-          "description": ""
+          "role": "metric"
         },
         {
           "name": "salary_max",
           "type": "DOUBLE",
-          "role": "metric",
-          "description": ""
+          "role": "metric"
         },
         {
           "name": "link_inpa",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         }
       ],
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-clean/inpa-reclutamento/inpa_bandi_open/2026/inpa_bandi_open_2026_clean.parquet",
-        "multi_file": false
-      },
-      "stage": "incubating",
       "mart_refs": [
         "inpa_bandi_open__mart_trend_anno",
         "inpa_bandi_open__mart_scadenze_calendario",
@@ -382,18 +331,18 @@
         "inpa_bandi_open__mart_profili_ricercati",
         "inpa_bandi_open__mart_geografia_bandi",
         "inpa_bandi_open__mart_tipo_procedura"
-      ]
+      ],
+      "last_run": {
+        "at": "2026-11-25T08:25:07.138351+00:00",
+        "year": 2026,
+        "status": "SUCCESS"
+      }
     },
     {
       "slug": "inpa_comunicazioni",
       "name": "Inpa Comunicazioni",
       "description": "Comunicazioni di procedura dei concorsi inPA — graduatorie, calendari, esiti",
-      "source": "",
       "source_id": "inpa_reclutamento",
-      "period": {
-        "start": 2026,
-        "end": 2026
-      },
       "tags": [
         "pa",
         "concorsi",
@@ -401,77 +350,69 @@
         "esiti"
       ],
       "category": "pa",
-      "columns": [
-        {
-          "name": "id",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
-        },
-        {
-          "name": "concorso_id",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
-        },
-        {
-          "name": "concorso_title",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
-        },
-        {
-          "name": "subject",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
-        },
-        {
-          "name": "body",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
-        },
-        {
-          "name": "categoria",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
-        },
-        {
-          "name": "data_pubblicazione",
-          "type": "DATE",
-          "role": "dimension",
-          "description": ""
-        },
-        {
-          "name": "ente",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
-        }
-      ],
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-clean/inpa-reclutamento/inpa_comunicazioni/2026/inpa_comunicazioni_2026_clean.parquet",
-        "multi_file": false
-      },
-      "stage": "incubating",
-      "mart_refs": [
-        "inpa_comunicazioni__mart_esiti_per_categoria",
-        "inpa_comunicazioni__mart_esiti_per_ente"
-      ]
-    },
-    {
-      "slug": "inpa_insight",
-      "name": "Inpa Insight",
-      "description": "",
-      "source": "",
-      "source_id": "inpa_reclutamento",
       "period": {
         "start": 2026,
         "end": 2026
       },
+      "partitions": {
+        "2026": 7183
+      },
+      "columns": [
+        {
+          "name": "id",
+          "type": "VARCHAR",
+          "role": "dimension"
+        },
+        {
+          "name": "concorso_id",
+          "type": "VARCHAR",
+          "role": "dimension"
+        },
+        {
+          "name": "concorso_title",
+          "type": "VARCHAR",
+          "role": "dimension"
+        },
+        {
+          "name": "subject",
+          "type": "VARCHAR",
+          "role": "dimension"
+        },
+        {
+          "name": "body",
+          "type": "VARCHAR",
+          "role": "dimension"
+        },
+        {
+          "name": "categoria",
+          "type": "VARCHAR",
+          "role": "dimension"
+        },
+        {
+          "name": "data_pubblicazione",
+          "type": "DATE",
+          "role": "dimension"
+        },
+        {
+          "name": "ente",
+          "type": "VARCHAR",
+          "role": "dimension"
+        }
+      ],
+      "mart_refs": [
+        "inpa_comunicazioni__mart_esiti_per_categoria",
+        "inpa_comunicazioni__mart_esiti_per_ente"
+      ],
+      "last_run": {
+        "at": "2026-11-25T08:32:07.760092+00:00",
+        "year": 2026,
+        "status": "SUCCESS"
+      }
+    },
+    {
+      "slug": "inpa_insight",
+      "name": "Inpa Insight",
+      "source_id": "inpa_reclutamento",
       "tags": [
         "pa",
         "concorsi",
@@ -480,213 +421,187 @@
         "compose"
       ],
       "category": "pa",
+      "period": {
+        "start": 2026,
+        "end": 2026
+      },
+      "partitions": {
+        "2026": 78138
+      },
       "columns": [
         {
           "name": "id",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "codice",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "titolo",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "figura_ricercata",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "descrizione",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "data_pubblicazione",
           "type": "DATE",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "data_scadenza",
           "type": "DATE",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "data_visibilita",
           "type": "DATE",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "tipo_procedura",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "num_posti",
           "type": "INTEGER",
-          "role": "metric",
-          "description": ""
+          "role": "metric"
         },
         {
           "name": "is_graduatoria",
           "type": "BOOLEAN",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "is_likely_update",
           "type": "BOOLEAN",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "status",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "status_label",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "categoria",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "settore",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "",
           "semantic_type": "region_code"
         },
         {
           "name": "provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "",
           "semantic_type": "province_code"
         },
         {
           "name": "ente",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "enti_riferimento",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "categorie",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "settori",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "sedi",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "salary_min",
           "type": "DOUBLE",
-          "role": "metric",
-          "description": ""
+          "role": "metric"
         },
         {
           "name": "salary_max",
           "type": "DOUBLE",
-          "role": "metric",
-          "description": ""
+          "role": "metric"
         },
         {
           "name": "link_inpa",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "n_comunicazioni",
           "type": "BIGINT",
-          "role": "metric",
-          "description": ""
+          "role": "metric"
         },
         {
           "name": "prima_comunicazione",
           "type": "DATE",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "ultima_comunicazione",
           "type": "DATE",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "categorie_comunicazioni",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "ha_comunicazioni",
           "type": "BOOLEAN",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "giorni_prima_comunicazione",
           "type": "BIGINT",
-          "role": "metric",
-          "description": ""
+          "role": "metric"
         }
       ],
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-clean/inpa-reclutamento/inpa_insight/2026/inpa_insight_2026_clean.parquet",
-        "multi_file": false
-      },
-      "stage": "incubating",
       "mart_refs": [
         "inpa_insight__mart_tempi_per_ente",
         "inpa_insight__mart_trasparenza_ente",
         "inpa_insight__mart_tempi_per_procedura"
-      ]
+      ],
+      "last_run": {
+        "at": "2026-11-25T08:33:10.723009+00:00",
+        "year": 2026,
+        "status": "SUCCESS"
+      }
     }
   ],
   "marts": [
@@ -694,306 +609,123 @@
       "slug": "inpa_bandi_closed__mart_trend_anno",
       "dataset": "inpa_bandi_closed",
       "table": "mart_trend_anno",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/inpa-reclutamento/inpa_bandi_closed/2026/mart_trend_anno.parquet",
-        "multi_file": false
-      }
+      "layout": "year",
+      "year": 2026,
+      "primary_key": [
+        "anno"
+      ]
     },
     {
       "slug": "inpa_bandi_open__mart_enti",
       "dataset": "inpa_bandi_open",
       "table": "mart_enti",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/inpa-reclutamento/inpa_bandi_open/2026/mart_enti.parquet",
-        "multi_file": false
-      }
+      "layout": "year",
+      "year": 2026,
+      "primary_key": [
+        "ente"
+      ]
     },
     {
       "slug": "inpa_bandi_open__mart_geografia_bandi",
       "dataset": "inpa_bandi_open",
       "table": "mart_geografia_bandi",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/inpa-reclutamento/inpa_bandi_open/2026/mart_geografia_bandi.parquet",
-        "multi_file": false
-      }
+      "layout": "year",
+      "year": 2026,
+      "primary_key": [
+        "regione"
+      ]
     },
     {
       "slug": "inpa_bandi_open__mart_profili_ricercati",
       "dataset": "inpa_bandi_open",
       "table": "mart_profili_ricercati",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/inpa-reclutamento/inpa_bandi_open/2026/mart_profili_ricercati.parquet",
-        "multi_file": false
-      }
+      "layout": "year",
+      "year": 2026,
+      "primary_key": [
+        "profilo"
+      ]
     },
     {
       "slug": "inpa_bandi_open__mart_scadenze_calendario",
       "dataset": "inpa_bandi_open",
       "table": "mart_scadenze_calendario",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/inpa-reclutamento/inpa_bandi_open/2026/mart_scadenze_calendario.parquet",
-        "multi_file": false
-      }
+      "layout": "year",
+      "year": 2026,
+      "primary_key": [
+        "data_scadenza"
+      ]
     },
     {
       "slug": "inpa_bandi_open__mart_tipo_procedura",
       "dataset": "inpa_bandi_open",
       "table": "mart_tipo_procedura",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/inpa-reclutamento/inpa_bandi_open/2026/mart_tipo_procedura.parquet",
-        "multi_file": false
-      }
+      "layout": "year",
+      "year": 2026,
+      "primary_key": [
+        "tipo_procedura"
+      ]
     },
     {
       "slug": "inpa_bandi_open__mart_trend_anno",
       "dataset": "inpa_bandi_open",
       "table": "mart_trend_anno",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/inpa-reclutamento/inpa_bandi_open/2026/mart_trend_anno.parquet",
-        "multi_file": false
-      }
+      "layout": "year",
+      "year": 2026,
+      "primary_key": [
+        "anno"
+      ]
     },
     {
       "slug": "inpa_comunicazioni__mart_esiti_per_categoria",
       "dataset": "inpa_comunicazioni",
       "table": "mart_esiti_per_categoria",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/inpa-reclutamento/inpa_comunicazioni/2026/mart_esiti_per_categoria.parquet",
-        "multi_file": false
-      }
+      "layout": "year",
+      "year": 2026,
+      "primary_key": [
+        "categoria"
+      ]
     },
     {
       "slug": "inpa_comunicazioni__mart_esiti_per_ente",
       "dataset": "inpa_comunicazioni",
       "table": "mart_esiti_per_ente",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/inpa-reclutamento/inpa_comunicazioni/2026/mart_esiti_per_ente.parquet",
-        "multi_file": false
-      }
+      "layout": "year",
+      "year": 2026,
+      "primary_key": [
+        "ente"
+      ]
     },
     {
       "slug": "inpa_insight__mart_tempi_per_ente",
       "dataset": "inpa_insight",
       "table": "mart_tempi_per_ente",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/inpa-reclutamento/inpa_insight/2026/mart_tempi_per_ente.parquet",
-        "multi_file": false
-      }
+      "layout": "year",
+      "year": 2026,
+      "primary_key": [
+        "ente"
+      ]
     },
     {
       "slug": "inpa_insight__mart_tempi_per_procedura",
       "dataset": "inpa_insight",
       "table": "mart_tempi_per_procedura",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/inpa-reclutamento/inpa_insight/2026/mart_tempi_per_procedura.parquet",
-        "multi_file": false
-      }
+      "layout": "year",
+      "year": 2026,
+      "primary_key": [
+        "tipo_procedura"
+      ]
     },
     {
       "slug": "inpa_insight__mart_trasparenza_ente",
       "dataset": "inpa_insight",
       "table": "mart_trasparenza_ente",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/inpa-reclutamento/inpa_insight/2026/mart_trasparenza_ente.parquet",
-        "multi_file": false
-      }
+      "layout": "year",
+      "year": 2026,
+      "primary_key": [
+        "ente"
+      ]
     }
   ],
-  "signals": [
-    {
-      "id": "compose:inpa_insight",
-      "source_id": "inpa_reclutamento",
-      "status": "ok",
-      "label": "inpa_insight",
-      "detail": "anno 2026 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20261015T152740Z_0c3a294e",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "clean": 75157,
-          "mart": 3524
-        },
-        "output_bytes": {
-          "raw": 16979221,
-          "clean": 16965911,
-          "mart": 45134
-        },
-        "started_at": "2026-10-15T15:27:40.005185+00:00",
-        "finished_at": "2026-10-15T15:27:40.942716+00:00",
-        "duration_seconds": 0.938
-      }
-    },
-    {
-      "id": "inpa_bandi_closed",
-      "source_id": "inpa_reclutamento",
-      "status": "ok",
-      "label": "inpa_bandi_closed",
-      "detail": "anno 2026 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20261015T150815Z_7467f523",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 75158,
-          "clean": 75157,
-          "mart": 9
-        },
-        "output_bytes": {
-          "raw": 81266202,
-          "clean": 16979221,
-          "mart": 763
-        },
-        "started_at": "2026-10-15T15:08:15.682209+00:00",
-        "finished_at": "2026-10-15T15:26:12.950786+00:00",
-        "duration_seconds": 1077.269
-      }
-    },
-    {
-      "id": "inpa_bandi_open",
-      "source_id": "inpa_reclutamento",
-      "status": "ok",
-      "label": "inpa_bandi_open",
-      "detail": "anno 2026 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20261123T173828Z_de0a68ce",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 1920,
-          "clean": 1920,
-          "mart": 286
-        },
-        "output_bytes": {
-          "raw": 2071935,
-          "clean": 480181,
-          "mart": 10733
-        },
-        "started_at": "2026-11-23T17:38:28.092414+00:00",
-        "finished_at": "2026-11-23T17:38:42.947463+00:00",
-        "duration_seconds": 14.855
-      }
-    },
-    {
-      "id": "inpa_comunicazioni",
-      "source_id": "inpa_reclutamento",
-      "status": "ok",
-      "label": "inpa_comunicazioni",
-      "detail": "anno 2026 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20261123T173843Z_8ad98802",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 7124,
-          "clean": 7124,
-          "mart": 1317
-        },
-        "output_bytes": {
-          "raw": 4815804,
-          "clean": 969955,
-          "mart": 16971
-        },
-        "started_at": "2026-11-23T17:38:43.496836+00:00",
-        "finished_at": "2026-11-23T17:39:42.842541+00:00",
-        "duration_seconds": 59.346
-      }
-    }
-  ],
-  "codelists": [],
-  "entities": {
-    "entities": {
-      "Provincia": {
-        "entity": "Provincia",
-        "label": "Provincia",
-        "datasets": [
-          {
-            "slug": "inpa_bandi_closed",
-            "name": "Inpa Bandi Closed",
-            "column": "provincia",
-            "semantic_type": "province_code"
-          },
-          {
-            "slug": "inpa_bandi_open",
-            "name": "Inpa Bandi Open",
-            "column": "provincia",
-            "semantic_type": "province_code"
-          },
-          {
-            "slug": "inpa_insight",
-            "name": "Inpa Insight",
-            "column": "provincia",
-            "semantic_type": "province_code"
-          }
-        ],
-        "types": {
-          "province_code": 3
-        }
-      },
-      "Regione": {
-        "entity": "Regione",
-        "label": "Regione",
-        "datasets": [
-          {
-            "slug": "inpa_bandi_closed",
-            "name": "Inpa Bandi Closed",
-            "column": "regione",
-            "semantic_type": "region_code"
-          },
-          {
-            "slug": "inpa_bandi_open",
-            "name": "Inpa Bandi Open",
-            "column": "regione",
-            "semantic_type": "region_code"
-          },
-          {
-            "slug": "inpa_insight",
-            "name": "Inpa Insight",
-            "column": "regione",
-            "semantic_type": "region_code"
-          }
-        ],
-        "types": {
-          "region_code": 3
-        }
-      }
-    },
-    "bridges": []
-  }
+  "checks": [],
+  "codelists": []
 }
