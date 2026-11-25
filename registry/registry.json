@@ -28,140 +28,6 @@
       "partitions": {
         "2026": 78138
       },
-      "columns": [
-        {
-          "name": "id",
-          "type": "VARCHAR",
-          "role": "dimension"
-        },
-        {
-          "name": "codice",
-          "type": "VARCHAR",
-          "role": "dimension"
-        },
-        {
-          "name": "titolo",
-          "type": "VARCHAR",
-          "role": "dimension"
-        },
-        {
-          "name": "figura_ricercata",
-          "type": "VARCHAR",
-          "role": "dimension"
-        },
-        {
-          "name": "descrizione",
-          "type": "VARCHAR",
-          "role": "dimension"
-        },
-        {
-          "name": "data_pubblicazione",
-          "type": "DATE",
-          "role": "dimension"
-        },
-        {
-          "name": "data_scadenza",
-          "type": "DATE",
-          "role": "dimension"
-        },
-        {
-          "name": "data_visibilita",
-          "type": "DATE",
-          "role": "dimension"
-        },
-        {
-          "name": "tipo_procedura",
-          "type": "VARCHAR",
-          "role": "dimension"
-        },
-        {
-          "name": "num_posti",
-          "type": "INTEGER",
-          "role": "metric"
-        },
-        {
-          "name": "is_graduatoria",
-          "type": "BOOLEAN",
-          "role": "dimension"
-        },
-        {
-          "name": "is_likely_update",
-          "type": "BOOLEAN",
-          "role": "dimension"
-        },
-        {
-          "name": "status",
-          "type": "VARCHAR",
-          "role": "dimension"
-        },
-        {
-          "name": "status_label",
-          "type": "VARCHAR",
-          "role": "dimension"
-        },
-        {
-          "name": "categoria",
-          "type": "VARCHAR",
-          "role": "dimension"
-        },
-        {
-          "name": "settore",
-          "type": "VARCHAR",
-          "role": "dimension"
-        },
-        {
-          "name": "regione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "semantic_type": "region_code"
-        },
-        {
-          "name": "provincia",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "semantic_type": "province_code"
-        },
-        {
-          "name": "ente",
-          "type": "VARCHAR",
-          "role": "dimension"
-        },
-        {
-          "name": "enti_riferimento",
-          "type": "VARCHAR",
-          "role": "dimension"
-        },
-        {
-          "name": "categorie",
-          "type": "VARCHAR",
-          "role": "dimension"
-        },
-        {
-          "name": "settori",
-          "type": "VARCHAR",
-          "role": "dimension"
-        },
-        {
-          "name": "sedi",
-          "type": "VARCHAR",
-          "role": "dimension"
-        },
-        {
-          "name": "salary_min",
-          "type": "DOUBLE",
-          "role": "metric"
-        },
-        {
-          "name": "salary_max",
-          "type": "DOUBLE",
-          "role": "metric"
-        },
-        {
-          "name": "link_inpa",
-          "type": "VARCHAR",
-          "role": "dimension"
-        }
-      ],
       "mart_refs": [
         "inpa_bandi_closed__mart_trend_anno"
       ],
@@ -188,7 +54,7 @@
         "end": 2026
       },
       "partitions": {
-        "2026": 1935
+        "2026": 1958
       },
       "columns": [
         {
@@ -333,7 +199,7 @@
         "inpa_bandi_open__mart_tipo_procedura"
       ],
       "last_run": {
-        "at": "2026-11-25T08:25:07.138351+00:00",
+        "at": "2026-11-25T16:56:05.149097+00:00",
         "year": 2026,
         "status": "SUCCESS"
       }
@@ -355,7 +221,7 @@
         "end": 2026
       },
       "partitions": {
-        "2026": 7183
+        "2026": 7228
       },
       "columns": [
         {
@@ -404,7 +270,7 @@
         "inpa_comunicazioni__mart_esiti_per_ente"
       ],
       "last_run": {
-        "at": "2026-11-25T08:32:07.760092+00:00",
+        "at": "2026-11-25T16:56:19.200443+00:00",
         "year": 2026,
         "status": "SUCCESS"
       }
@@ -428,170 +294,6 @@
       "partitions": {
         "2026": 78138
       },
-      "columns": [
-        {
-          "name": "id",
-          "type": "VARCHAR",
-          "role": "dimension"
-        },
-        {
-          "name": "codice",
-          "type": "VARCHAR",
-          "role": "dimension"
-        },
-        {
-          "name": "titolo",
-          "type": "VARCHAR",
-          "role": "dimension"
-        },
-        {
-          "name": "figura_ricercata",
-          "type": "VARCHAR",
-          "role": "dimension"
-        },
-        {
-          "name": "descrizione",
-          "type": "VARCHAR",
-          "role": "dimension"
-        },
-        {
-          "name": "data_pubblicazione",
-          "type": "DATE",
-          "role": "dimension"
-        },
-        {
-          "name": "data_scadenza",
-          "type": "DATE",
-          "role": "dimension"
-        },
-        {
-          "name": "data_visibilita",
-          "type": "DATE",
-          "role": "dimension"
-        },
-        {
-          "name": "tipo_procedura",
-          "type": "VARCHAR",
-          "role": "dimension"
-        },
-        {
-          "name": "num_posti",
-          "type": "INTEGER",
-          "role": "metric"
-        },
-        {
-          "name": "is_graduatoria",
-          "type": "BOOLEAN",
-          "role": "dimension"
-        },
-        {
-          "name": "is_likely_update",
-          "type": "BOOLEAN",
-          "role": "dimension"
-        },
-        {
-          "name": "status",
-          "type": "VARCHAR",
-          "role": "dimension"
-        },
-        {
-          "name": "status_label",
-          "type": "VARCHAR",
-          "role": "dimension"
-        },
-        {
-          "name": "categoria",
-          "type": "VARCHAR",
-          "role": "dimension"
-        },
-        {
-          "name": "settore",
-          "type": "VARCHAR",
-          "role": "dimension"
-        },
-        {
-          "name": "regione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "semantic_type": "region_code"
-        },
-        {
-          "name": "provincia",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "semantic_type": "province_code"
-        },
-        {
-          "name": "ente",
-          "type": "VARCHAR",
-          "role": "dimension"
-        },
-        {
-          "name": "enti_riferimento",
-          "type": "VARCHAR",
-          "role": "dimension"
-        },
-        {
-          "name": "categorie",
-          "type": "VARCHAR",
-          "role": "dimension"
-        },
-        {
-          "name": "settori",
-          "type": "VARCHAR",
-          "role": "dimension"
-        },
-        {
-          "name": "sedi",
-          "type": "VARCHAR",
-          "role": "dimension"
-        },
-        {
-          "name": "salary_min",
-          "type": "DOUBLE",
-          "role": "metric"
-        },
-        {
-          "name": "salary_max",
-          "type": "DOUBLE",
-          "role": "metric"
-        },
-        {
-          "name": "link_inpa",
-          "type": "VARCHAR",
-          "role": "dimension"
-        },
-        {
-          "name": "n_comunicazioni",
-          "type": "BIGINT",
-          "role": "metric"
-        },
-        {
-          "name": "prima_comunicazione",
-          "type": "DATE",
-          "role": "dimension"
-        },
-        {
-          "name": "ultima_comunicazione",
-          "type": "DATE",
-          "role": "dimension"
-        },
-        {
-          "name": "categorie_comunicazioni",
-          "type": "VARCHAR",
-          "role": "dimension"
-        },
-        {
-          "name": "ha_comunicazioni",
-          "type": "BOOLEAN",
-          "role": "dimension"
-        },
-        {
-          "name": "giorni_prima_comunicazione",
-          "type": "BIGINT",
-          "role": "metric"
-        }
-      ],
       "mart_refs": [
         "inpa_insight__mart_tempi_per_ente",
         "inpa_insight__mart_trasparenza_ente",
