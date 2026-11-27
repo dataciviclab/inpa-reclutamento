@@ -2,7 +2,7 @@
   "schema_version": 2,
   "repo": "inpa-reclutamento",
   "source_repo": "dataciviclab/inpa-reclutamento",
-  "updated_at": "2026-11-26",
+  "updated_at": "2026-11-27",
   "gcs": {
     "clean": "year",
     "prefix": "inpa-reclutamento/"
@@ -188,7 +188,7 @@
         "end": 2026
       },
       "partitions": {
-        "2026": 1952
+        "2026": 1956
       },
       "columns": [
         {
@@ -333,7 +333,7 @@
         "inpa_bandi_open__mart_tipo_procedura"
       ],
       "last_run": {
-        "at": "2026-11-26T16:34:43.486873+00:00",
+        "at": "2026-11-27T16:20:13.513277+00:00",
         "year": 2026,
         "status": "SUCCESS"
       }
@@ -355,7 +355,7 @@
         "end": 2026
       },
       "partitions": {
-        "2026": 7274
+        "2026": 7311
       },
       "columns": [
         {
@@ -404,7 +404,7 @@
         "inpa_comunicazioni__mart_esiti_per_ente"
       ],
       "last_run": {
-        "at": "2026-11-26T16:34:59.153037+00:00",
+        "at": "2026-11-27T16:20:29.014571+00:00",
         "year": 2026,
         "status": "SUCCESS"
       }
